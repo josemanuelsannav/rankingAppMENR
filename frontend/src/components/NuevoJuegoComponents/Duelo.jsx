@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
+import { useNavigate } from 'react-router-dom';
 
 const Duelo = () => {
     const [jugadores, setJugadores] = useState([]);
@@ -41,7 +42,8 @@ const Duelo = () => {
         const perdedorId = selectElementPerdedor.options[selectElementPerdedor.selectedIndex].value;
         const perdedorNombre = jugadores.find(jugador => jugador._id === perdedorId).nombre;
         const apuesta = Number(document.getElementById('puntos').value);
-        
+        const navigate = useNavigate();
+
         if (ganadorNombre === perdedorNombre) {
             alert("El ganador y el perdedor no pueden ser la misma persona.");
             return;
@@ -99,7 +101,7 @@ const Duelo = () => {
                 } else {
                     console.log('Error al guardar el historico');
                 }
-                window.location.reload();
+                navigate(0);
             }
         } catch (error) {
             console.error('Error al guardar el duelo:', error);

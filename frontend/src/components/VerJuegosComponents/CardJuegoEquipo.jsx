@@ -3,12 +3,14 @@ import { Card, CardBody, CardTitle } from 'reactstrap';
 import styled from 'styled-components';
 import BarChart from '../RankingPrincipalComponents/BarChart';
 import api from '../../services/api';
+import { useNavigate } from 'react-router-dom';
 
 const CardJuegoEquipo = ({ juego, juegosIndividuales, juegosPorEquipos, jugadores }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [data, setData] = useState({});
   const [options, setOptions] = useState({});
   const [config, setConfig] = useState({});
+  const navigate = useNavigate();
 
 
 
@@ -72,7 +74,7 @@ const CardJuegoEquipo = ({ juego, juegosIndividuales, juegosPorEquipos, jugadore
 
       await api.delete(`/historico/eliminarHistorico/${juego._id}`);
       await api.delete(`/juegosEquipos/eliminarJuegoEquipo/${juego._id}`);
-      window.location.reload();
+      navigate(0); // Redirige a la misma ruta para forzar una actualización
     } catch (error) {
       console.log("Error al borrar el juego: ", error);
     }

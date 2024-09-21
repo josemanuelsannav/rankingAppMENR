@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
 import ListaJugadores from './ListaJugadores';
+import { useNavigate } from 'react-router-dom';
 
 
 const NuevoJuegoIndividual = () => {
+    const navigate = useNavigate();
 
     const [juegosCategorias, setJuegosCategorias] = useState([]);
     const [jugadores, setJugadores] = useState([]);
@@ -93,7 +95,7 @@ const NuevoJuegoIndividual = () => {
                 } else {
                     console.log('Error al guardar el historico');
                 }
-                window.location.reload();
+                navigate(0); // Redirige a la misma ruta para forzar una actualización
             }
             
 

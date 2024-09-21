@@ -75,7 +75,7 @@ const PlayerForm = () => {
             if (response.status === 201) {
                 console.log('Jugador creado con éxito:', response.data);
                 alert('Jugador creado con éxito');
-                window.location.reload();
+                navigate(0);
             }
 
         } catch (error) {

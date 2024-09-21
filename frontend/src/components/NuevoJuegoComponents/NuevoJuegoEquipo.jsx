@@ -4,6 +4,7 @@ import addIcon from '../../assets/anadir.png';
 import botonEliminar from '../../assets/boton-eliminar.png';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
 import { Card, CardHeader, CardBody, CardTitle, CardText, Button as ReactstrapButton } from 'reactstrap'; // Importa los componentes correctos de reactstrap
+import { useNavigate } from 'react-router-dom';
 
 const NuevoJuegoEquipo = () => {
     const [juegosCategorias, setJuegosCategorias] = useState([]);
@@ -15,6 +16,7 @@ const NuevoJuegoEquipo = () => {
     const [equipoIntegrantes, setEquipoIntegrantes] = useState([]);
     const [showIntegrantesModal, setShowIntegrantesModal] = useState(false);
     const [currentEquipoIndex, setCurrentEquipoIndex] = useState(null);
+    const navigate = useNavigate();
 
 
     const fetchJuegosCategorias = async () => {
@@ -89,7 +91,7 @@ const NuevoJuegoEquipo = () => {
                 } else {
                     console.log('Error al guardar el historico');
                 }
-                window.location.reload();
+                navigate(0);
             }
         } catch (error) {
             console.error('Error al guardar el juego:', error);

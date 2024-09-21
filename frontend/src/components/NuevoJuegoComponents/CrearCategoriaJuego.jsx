@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const CrearCategoriaJuego = () => {
+    const navigate = useNavigate();
 
     const [juegoCategoria, setJuegoCategoria] = useState({
         nombre: ""
@@ -29,7 +31,7 @@ const CrearCategoriaJuego = () => {
             if (response.status === 201) {
                 console.log('juegoCategoria creado con éxito:', response.data);
                 alert('JuegoCategoria creado con exito');
-                window.location.reload();
+                navigate(0);
             }
 
         } catch (error) {

@@ -1,7 +1,10 @@
 import React from 'react'
 import { Card, CardHeader, CardBody, CardTitle, CardText, Button as ReactstrapButton } from 'reactstrap'; // Importa los componentes correctos de reactstrap
 import api from '../../services/api';
+import { useNavigate } from 'react-router-dom';
+
 const CardDuelos = ({ duelo }) => {
+    const navigate = useNavigate();
 
     const handleBorrar = async () => {
         try {
@@ -10,7 +13,7 @@ const CardDuelos = ({ duelo }) => {
 
           await api.delete(`/historico/eliminarHistorico/${duelo._id}`);
           await api.delete(`/duelos/eliminarDuelo/${duelo._id}`);
-          window.location.reload();
+          navigate(0); // Redirige a la misma ruta para forzar una actualización
         } catch (error) {
           console.log("Error al borrar el duelo: ", error);
         }
