@@ -141,7 +141,7 @@ const ModalContent = styled.div`
   width: 90vw;
   max-width: 1200px;
   height: 80vh; /* Aumenta la altura del modal */
-  max-height: 90vh; /* Ajusta el tamaño máximo según tus necesidades */
+  max-height: 100vh; /* Ajusta el tamaño máximo según tus necesidades */
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   position: relative;
   display: flex;
