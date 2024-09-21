@@ -1,0 +1,394 @@
+body{
+    margin:0px;
+}
+.container {
+    display: flex;
+    padding-top: 40px;
+    justify-content: center;
+}
+
+/*////////////////////////////// */
+/* Asegúrate de que el contenedor de la tarjeta utiliza flexbox */
+.jugador-item {
+    display: flex;
+    align-items: center; /* Alinea verticalmente los elementos al centro */
+    padding: 10px; /* Ajusta el padding según sea necesario */
+    margin-bottom: 10px; /* Espacio entre las tarjetas */
+}
+
+/* Estilo para el span del índice */
+.numero-posicion {
+    margin-right: 10px; /* Espacio entre el índice y el contenido de la tarjeta */
+    font-weight: bold; /* Opcional: hace que el índice sea más visible */
+    font-size: 3rem; /* Ajusta el tamaño del número */
+    color: #ff5733; /* Ajusta el color del número */
+
+}
+/*////////////////////////////// */
+
+
+
+.botones-container button {
+    margin-left: 10px; /* Espacio entre los botones */
+}
+
+@media (max-width: 500px) {
+    .botones-container button {
+        margin-left: 20px; /* Aumentar el espacio entre los botones para pantallas pequeñas */
+    }
+    .botones-container button:last-child {
+        margin-top: 10px; /* Añadir un margen superior al tercer botón para separarlo de los otros dos */
+    }
+}
+
+.header {
+    text-align: center;
+    text-transform: uppercase;
+    padding: 32px;
+    background-color: #0a0a23;
+    color: #fff;
+    border-bottom: 4px solid #fdb347;
+  }
+.header h1{
+    font-size: 4em;
+}
+
+@media (max-width: 420px) {
+    .header {
+      width: 100vw;
+      overflow-x: hidden;
+      padding: 16px;
+      box-sizing: border-box; /* Incluir padding en el ancho del header */
+    }
+    .header h1{
+        font-size: 3.5em;
+    }
+  }
+  
+
+
+
+
+.jss1038 {
+    display: flex;
+    position: relative;
+    text-align: center;
+    flex-direction: column;
+}
+
+.MuiPaper-elevation0 {
+    box-shadow: none;
+}
+
+.MuiPaper-rounded {
+    border-radius: 4px;
+}
+
+.MuiPaper-root {
+    color: rgba(0, 0, 0, 0.87);
+    transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    background-color: #fff;
+}
+
+.jss1040 {
+    -webkit-font-smoothing: antialiased;
+    font-size: 0.875rem;
+    font-family: Roboto,"Helvetica","Arial",sans-serif;
+    font-weight: 400;
+    line-height: 1.43;
+    color: rgba(0, 0, 0, 0.87);
+    text-align: center;
+    box-sizing: inherit;
+    width: 100%;
+    height: 300px;
+    display: flex;
+    align-items: flex-end;
+}
+
+
+
+.jss1041 {
+    width: 33%;
+    border-bottom-left-radius: 0%;
+    border-bottom-right-radius: 0%;
+}
+
+.MuiPaper-elevation1 {
+    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+}
+
+.jss1045 {
+    top: -100px;
+    left: 50%;
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    transform: translateX(-50%);
+}
+
+.jss1046 {
+    top: 10px;
+    left: 50%;
+    position: absolute;
+    transform: translateX(-50%);
+}
+
+@media (min-width: 600px) {
+    .MuiTypography-h4 {
+        font-size: 1.8219rem;
+    }
+}
+
+.MuiTypography-h4 {
+    font-size: 1.5625rem;
+    font-family: Bebas Neue;
+    font-weight: 400;
+    line-height: 1.235;
+}
+
+.MuiTypography-root {
+    margin: 0;
+}
+
+h4 {
+    display: block;
+    margin-block-start: 1.33em;
+    margin-block-end: 1.33em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+    unicode-bidi: isolate;
+}
+
+.MuiAvatar-root {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    overflow: hidden;
+    position: relative;
+    font-size: 1.25rem;
+    align-items: center;
+    flex-shrink: 0;
+    font-family: Roboto, "Helvetica", "Arial", sans-serif;
+    line-height: 1;
+    user-select: none;
+    border-radius: 50%;
+    justify-content: center;
+}
+
+.MuiAvatar-colorDefault {
+    color: #fff;
+    background-color: #bdbdbd;
+}
+
+.jss1049 {
+    width: 64px;
+    height: 64px;
+    margin: 1em;
+}
+
+.MuiAvatar-fallback {
+    width: 75%;
+    height: 75%;
+}
+
+.MuiSvgIcon-root {
+    fill: currentColor;
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+    font-size: 1.5rem;
+    transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    flex-shrink: 0;
+    user-select: none;
+}
+
+svg:not(:root) {
+    overflow-clip-margin: content-box;
+    overflow: hidden;
+}
+
+.jss1039 {
+    display: flex;
+    line-height: 1;
+   
+    justify-content: center; /* Horizontally center the content */
+    
+}
+
+.MuiTypography-subtitle2 {
+    font-size: 1rem;
+    font-family: Bebas Neue;
+    font-weight: 500;
+    line-height: 1.57;
+}
+
+.MuiTypography-root {
+    margin: 0;
+}
+
+h6 {
+    display: block;
+    font-size: 0.67em;
+    margin-block-start: 2.33em;
+    margin-block-end: 2.33em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+    unicode-bidi: isolate;
+}
+
+.jss1042 {
+    height: 280px;
+    position: relative;
+    background-color: #fffae0;
+}
+.jss1044 {
+    height: 210px;
+    position: relative;
+    background-color: #ffe8d1;
+}
+.jss1043 {
+    height: 240px;
+    position: relative;
+    background-color: #f5f5f5;
+}
+
+.MuiAvatar-root {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    overflow: hidden;
+    position: relative;
+    font-size: 1.25rem;
+    align-items: center;
+    flex-shrink: 0;
+    font-family: Roboto, "Helvetica", "Arial", sans-serif;
+    line-height: 1;
+    user-select: none;
+    border-radius: 50%;
+    justify-content: center;
+}
+
+.foto img {
+    -webkit-font-smoothing: antialiased;
+    font-weight: 400;
+    text-align: center;
+    box-sizing: inherit;
+    display: flex;
+    overflow: hidden;
+    position: relative;
+    font-size: 1.25rem;
+    align-items: center;
+    flex-shrink: 0;
+    font-family: Roboto,"Helvetica","Arial",sans-serif;
+    line-height: 1;
+    user-select: none;
+    border-radius: 50%;
+    justify-content: center;
+    color: #fff;
+    background-color: #bdbdbd;
+    width: 100px;
+    height: 100px;
+    margin: 1em;
+    object-fit: cover;
+}
+
+.jss1048{
+    -webkit-font-smoothing: antialiased;
+    font-size: 0.875rem;
+    font-family: Roboto,"Helvetica","Arial",sans-serif;
+    font-weight: 400;
+    line-height: 1.43;
+    text-align: center;
+    color: rgba(0, 0, 0, 0.87);
+    box-sizing: inherit;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+.nombre-podio{
+    -webkit-font-smoothing: antialiased;
+    text-align: center;
+    color: inherit;
+    box-sizing: inherit;
+    margin: 0;
+    font-size: 1rem;
+    font-family: Bebas Neue;
+    font-weight: 400;
+    cursor: pointer;
+    display: flex;
+    line-height: 1;
+}
+
+
+
+
+
+
+.modal {
+    display: none; /* Por defecto, el modal está oculto */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-contenido {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    
+}
+
+.cerrar-modal {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.cerrar-modal:hover,
+.cerrar-modal:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.jss1040 canvas {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+
+  #grafica_historico {
+    width: 100% !important;
+    height:500px !important; /* Ajuste la altura según sea necesario */
+}
+/*
+.chart-container {
+    width: 100%;
+    height: 100%;
+    max-width: 800px; 
+    max-height: 600px; 
+    margin: auto;
+}*/
+/* styles.css */
+.chart-container {
+    width: 100%;
+    height: 80vh; /* Aumenta la altura del contenedor de la gráfica */
+    max-width: 1200px; /* Ajusta el tamaño máximo según tus necesidades */
+    margin: auto;
+}

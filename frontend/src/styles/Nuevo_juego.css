@@ -1,0 +1,91 @@
+body{
+  margin: 0px;
+}
+
+/**Botones**/
+.btn-icon {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  margin-left: 10px; /* Ajusta el valor según sea necesario */
+}
+
+.btn-icon img {
+  display: block;
+}
+
+.jugadores-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.jugadores-container ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.jugadores-container li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+
+/*Nurvo Juego individual container raro*/
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+/* Añadir esto a tu archivo CSS */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  width: 300px;
+  max-height: 80%;
+  overflow-y: auto;
+}
+.header {
+  text-align: center;
+  text-transform: uppercase;
+  padding: 32px;
+  background-color: #0a0a23;
+  color: #fff;
+  border-bottom: 4px solid #fdb347;
+}
+
+.container {
+  padding: 16px;
+  
+}
+.equipo{
+  padding-bottom: 5px;
+}
+.borrar-equipo-btn{
+ margin-left: 10px;
+}
+.posicion{
+  margin-left: 10px;
+}
+.integrantes{
+  margin-left: 10px;
+}
+
+

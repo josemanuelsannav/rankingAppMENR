@@ -1,0 +1,3 @@
+omngo password: 4M97J7aEUFpDkdJb
+
+mongodb+srv://teuscarapoyen:4M97J7aEUFpDkdJb@clusterranking.denyk.mongodb.net/?retryWrites=true&w=majority&appName=ClusterRanking

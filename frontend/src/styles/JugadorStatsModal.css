@@ -1,0 +1,47 @@
+/* JugadorStatsModal.css */
+.modal-overlay-jugador {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Asegúrate de que el z-index sea alto */
+}
+
+.modal-content-jugador {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 200vw; /* Aumenta el ancho máximo del modal */
+    width: 150vw; /* Ajusta el tamaño según tus necesidades */
+    max-height: 90vh; /* Aumenta la altura máxima del modal */
+    height: 90vh; /* Ajusta el tamaño según tus necesidades */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+}
+
+.close-button-jugador {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+.chart-container-jugador {
+    width: 100%;
+    height: 100%; /* Aumenta la altura del contenedor de la gráfica */
+    flex-grow: 1;
+    max-width: 90vw; /* Asegúrate de que la gráfica no se distorsione */
+    max-height: 80vh; /* Asegúrate de que la gráfica no se distorsione */
+}
