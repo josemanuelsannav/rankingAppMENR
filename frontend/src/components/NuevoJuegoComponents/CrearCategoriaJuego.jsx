@@ -31,9 +31,9 @@ const CrearCategoriaJuego = () => {
             if (response.status === 201) {
                 console.log('juegoCategoria creado con éxito:', response.data);
                 alert('JuegoCategoria creado con exito');
-                navigate(0);
+                
             }
-
+            navigate("/NuevoJuego");
         } catch (error) {
             console.log("Error al añadir el jugador: ", error);
         }
