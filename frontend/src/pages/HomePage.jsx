@@ -16,6 +16,7 @@ const HomePage = () => {
 
   const fetchJugadores = async () => {
     try {
+      console.log("Obteniendo los jugadores..." + process.env.REACT_APP_BASE_URL);
       const { data } = (await api.get("/jugadores/todosLosJugadores")).data;
       setJugadores(data);
     } catch (error) {
