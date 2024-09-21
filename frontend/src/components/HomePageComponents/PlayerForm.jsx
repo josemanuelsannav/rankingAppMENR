@@ -74,8 +74,7 @@ const PlayerForm = () => {
             const response = await api.post("/jugadores/nuevoJugador", jugador);
             if (response.status === 201) {
                 console.log('Jugador creado con éxito:', response.data);
-                alert('Jugador creado con éxito');
-                navigate(0);
+                alert('Jugador creado con éxito');                  
             }
 
         } catch (error) {

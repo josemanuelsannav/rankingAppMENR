@@ -101,7 +101,7 @@ const Duelo = () => {
                 } else {
                     console.log('Error al guardar el historico');
                 }
-                navigate(0);
+                navigate("/RankingPrincipal");
             }
         } catch (error) {
             console.error('Error al guardar el duelo:', error);

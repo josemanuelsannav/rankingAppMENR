@@ -95,7 +95,7 @@ const NuevoJuegoIndividual = () => {
                 } else {
                     console.log('Error al guardar el historico');
                 }
-                navigate(0); // Redirige a la misma ruta para forzar una actualización
+                navigate("/RankingPrincipal"); // Redirige a la misma ruta para forzar una actualización
             }
             
 

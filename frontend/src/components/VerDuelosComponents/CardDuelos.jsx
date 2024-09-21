@@ -13,7 +13,7 @@ const CardDuelos = ({ duelo }) => {
 
           await api.delete(`/historico/eliminarHistorico/${duelo._id}`);
           await api.delete(`/duelos/eliminarDuelo/${duelo._id}`);
-          navigate(0); // Redirige a la misma ruta para forzar una actualización
+          navigate("/RankingPrincipal"); // Redirige a la misma ruta para forzar una actualización
         } catch (error) {
           console.log("Error al borrar el duelo: ", error);
         }

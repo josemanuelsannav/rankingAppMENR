@@ -74,7 +74,7 @@ const CardJuegoEquipo = ({ juego, juegosIndividuales, juegosPorEquipos, jugadore
 
       await api.delete(`/historico/eliminarHistorico/${juego._id}`);
       await api.delete(`/juegosEquipos/eliminarJuegoEquipo/${juego._id}`);
-      navigate(0); // Redirige a la misma ruta para forzar una actualización
+      navigate("/RankingPrincipal"); // Redirige a la misma ruta para forzar una actualización
     } catch (error) {
       console.log("Error al borrar el juego: ", error);
     }
