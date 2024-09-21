@@ -18,7 +18,7 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
 app.use(cors({
-    origin: import.meta.env.BASE_URL // Permite solicitudes desde este origen
+    origin: import.meta.env.REACT_APP_BASE_URL // Permite solicitudes desde este origen
   }));
 
 app.use('/api/jugadores', jugadorRoutes);

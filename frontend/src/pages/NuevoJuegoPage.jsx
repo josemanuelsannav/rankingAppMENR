@@ -1,5 +1,5 @@
 import React from 'react'
-import'../styles/Nuevo_Juego.css'
+import'../styles/Nuevo_juego.css'
 import TopBar from '../components/NuevoJuegoComponents/TopBar'
 import CrearCategoriaJuego from '../components/NuevoJuegoComponents/CrearCategoriaJuego'
 import NuevoJuegoIndividual from '../components/NuevoJuegoComponents/NuevoJuegoIndividual'
