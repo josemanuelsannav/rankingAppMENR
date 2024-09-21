@@ -16,8 +16,9 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
+const PORT = process.env.PORT || 3000;
 app.use(cors({
-    origin: 'http://localhost:5173' // Permite solicitudes desde este origen
+    origin: import.meta.env.BASE_URL // Permite solicitudes desde este origen
   }));
 
 app.use('/api/jugadores', jugadorRoutes);
@@ -27,7 +28,7 @@ app.use('/api/juegosCategoria', juegoCategoria);
 app.use('/api/duelos', duelosRoutes);
 app.use('/api/historico', historicoRoutes);
 
-app.listen(3000, () => {
+app.listen(PORT, () => {
     connectDB();
     console.log('Server is running on http://localhost:3000' );
 });
