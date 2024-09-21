@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL:  process.env.REACT_APP_BASE_URL + "/api", 
+  baseURL: "https://ranking-app-menr-back.vercel.app" + "/api", 
 });
 
 
