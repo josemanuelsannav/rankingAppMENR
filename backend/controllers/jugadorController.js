@@ -2,7 +2,7 @@ import Jugador from "../models/jugador.js";
 import mongoose from "mongoose";
 
 export const getJugadores = async (req, res) => {
-    console.log("Obteniendo jugadores");
+    console.log("Obteniendo jugadores:" + process.env.MONGO_URI);
     try {
         const jugadores = await Jugador.find();
         res.status(200).json({ success: true, data: jugadores });
