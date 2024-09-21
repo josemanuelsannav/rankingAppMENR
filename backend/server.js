@@ -10,6 +10,7 @@ import juegoCategoria from './routes/juegoCategoriaRoute.js';
 import duelosRoutes from './routes/duelosRoute.js';
 import historicoRoutes from './routes/historicoRoute.js';
 ///////////////////////////////////////////////////
+import mongoose from 'mongoose';
 
 dotenv.config();
 
@@ -25,7 +26,7 @@ app.use(cors({
   app.listen(PORT, () => {
     console.log('Server is running on '+PORT);
 });
-const mongoose = require("mongoose");
+
 mongoose.connect(process.env.MONGO_URI);
 
 // Control de errores
