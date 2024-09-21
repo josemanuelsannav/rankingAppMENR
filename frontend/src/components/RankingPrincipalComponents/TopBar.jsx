@@ -86,12 +86,7 @@ const TopBar = ({ jugadores, historico }) => {
             y: {
                 reverse: true, // Invertir el eje Y
             },
-            x:{
-                ticks: {
-                    maxRotation: 0, // No rotar los labels
-                    minRotation: 0, // No rotar los labels
-                },
-            },
+            
         },
     };
 
