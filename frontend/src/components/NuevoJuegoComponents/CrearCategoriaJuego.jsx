@@ -34,7 +34,6 @@ const CrearCategoriaJuego = () => {
                 
             }
             navigate("/NuevoJuegoPage");
-            window.location.reload();
         } catch (error) {
             console.log("Error al añadir el jugador: ", error);
         }
