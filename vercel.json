@@ -8,8 +8,8 @@
   "routes": [{ "src": "^(.*)$", "dest": "server.js" }],
   "rewrites": [
     {
-      "source": "/(.*)",   // Redirige todas las rutas
-      "destination": "/"   // A tu archivo de entrada (React Router se encarga del enrutamiento)
+      "source": "/(.*)",  
+      "destination": "/"   
     }
   ]
 }
