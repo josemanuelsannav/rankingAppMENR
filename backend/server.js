@@ -19,8 +19,22 @@ app.use(express.json());
 const PORT = process.env.PORT || 3000;
 
 app.use(cors({
-    origin: process.env.BASE_URL // Permite solicitudes desde este origen
+    origin: process.env.REACT_APP_BASE_URL, // Permite solicitudes desde este origen
+    credentials: true,
   }));
+  app.listen(PORT, () => {
+    console.log('Server is running on '+PORT);
+});
+const mongoose = require("mongoose");
+mongoose.connect(process.env.MONGO_URI);
+
+// Control de errores
+const db = mongoose.connection;
+
+db.on("error", console.error.bind(console, "Error de conexión a MongoDB:"));
+db.once("open", () => {
+  console.log("Conectado a la base de datos MongoDB");
+});
 
 app.use('/api/jugadores', jugadorRoutes);
 app.use('/api/juegosIndividuales', juegoIndividualRoutes);
@@ -29,7 +43,3 @@ app.use('/api/juegosCategoria', juegoCategoria);
 app.use('/api/duelos', duelosRoutes);
 app.use('/api/historico', historicoRoutes);
 
-app.listen(PORT, () => {
-    connectDB();
-    console.log('Server is running on http://localhost:3000' );
-});
