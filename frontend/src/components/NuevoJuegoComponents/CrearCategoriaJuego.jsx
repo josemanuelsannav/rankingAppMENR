@@ -33,7 +33,7 @@ const CrearCategoriaJuego = () => {
                 alert('JuegoCategoria creado con exito');
                 
             }
-            navigate("/NuevoJuegoPage");
+            navigate(0);
         } catch (error) {
             console.log("Error al añadir el jugador: ", error);
         }
