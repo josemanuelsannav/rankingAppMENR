@@ -5,28 +5,31 @@ import { useNavigate } from 'react-router-dom';
 const Duelo = () => {
     const [jugadores, setJugadores] = useState([]);
     const [juegosCategorias, setJuegosCategorias] = useState([]);
+    const navigate = useNavigate();
 
-    const fetchJuegosCategorias = async () => {
-        try {
-            const { data } = (await api.get("/juegosCategoria/todosLosJuegosCategoria")).data;
-            data.sort((a, b) => a.nombre.localeCompare(b.nombre));
-            setJuegosCategorias(data);
-        } catch (error) {
-            console.log("Error al obtener los juegosCategorias en el nuevo juego individual:  ", error);
-        }
-    };
-
-    const fetchJugadores = async () => {
-        try {
-            const { data } = (await api.get("/jugadores/todosLosJugadores")).data;
-            data.sort((a, b) => a.nombre.localeCompare(b.nombre));
-            setJugadores(data);
-        } catch (error) {
-            console.log("Error al obtener los jugadores en el home page:  ", error);
-        }
-    };
+   
 
     useEffect(() => {
+        const fetchJuegosCategorias = async () => {
+            try {
+                const { data } = (await api.get("/juegosCategoria/todosLosJuegosCategoria")).data;
+                data.sort((a, b) => a.nombre.localeCompare(b.nombre));
+                setJuegosCategorias(data);
+            } catch (error) {
+                console.log("Error al obtener los juegosCategorias en el nuevo juego individual:  ", error);
+            }
+        };
+    
+        const fetchJugadores = async () => {
+            try {
+                const { data } = (await api.get("/jugadores/todosLosJugadores")).data;
+                data.sort((a, b) => a.nombre.localeCompare(b.nombre));
+                setJugadores(data);
+            } catch (error) {
+                console.log("Error al obtener los jugadores en el home page:  ", error);
+            }
+        };
+
         fetchJuegosCategorias();
         fetchJugadores();
     }, []);
@@ -42,7 +45,6 @@ const Duelo = () => {
         const perdedorId = selectElementPerdedor.options[selectElementPerdedor.selectedIndex].value;
         const perdedorNombre = jugadores.find(jugador => jugador._id === perdedorId).nombre;
         const apuesta = Number(document.getElementById('puntos').value);
-        const navigate = useNavigate();
 
         if (ganadorNombre === perdedorNombre) {
             alert("El ganador y el perdedor no pueden ser la misma persona.");
