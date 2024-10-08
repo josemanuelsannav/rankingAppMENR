@@ -4,7 +4,8 @@ import mongoose from "mongoose";
 export const getJugadores = async (req, res) => {
     console.log("Obteniendo jugadores:" );
     try {
-        const jugadores = await Jugador.find();
+        const jugadores = await Jugador.find().sort({ puntuacion: -1 });
+        
         res.status(200).json({ success: true, data: jugadores });
     } catch (error) {
         console.error("Error al obtener los jugadores", error);
@@ -16,9 +17,12 @@ export const createJugador = async (req, res) => {
     const jugador = req.body;
     if(!jugador.nombre){
          return res.status(400).send({succes:false,  message: "El nombre es obligatorio"});
-       
     }
     console.log(jugador);
+    const jugadorExistente = await Jugador.findOne({ nombre: jugador.nombre });
+    if (jugadorExistente) {
+        return res.status(202).send({ success: false, message: "Ya existe un jugador con ese nombre" });
+    }
     const nuevoJugador = new Jugador(jugador);
     try {
         await nuevoJugador.save();

@@ -26,11 +26,11 @@ const CardDuelos = ({ duelo }) => {
             <CardTitle style={{ fontSize: '2rem', fontWeight: 'bold' }}>{duelo.nombre}</CardTitle>
 
                 <div>
-                    Ganador: {duelo.ganadorNombre}
+                <span style={{ color: 'green'}}>Ganador :</span> <span style={{ color: 'green', fontWeight: 'bold' }}>{duelo.ganadorNombre}</span>
                     <br />
-                    Perdedor: {duelo.perdedorNombre}
+                    <span style={{ color: 'red'}}>Perdedor :</span> <span style={{ color: 'red', fontWeight: 'bold' }}>{duelo.perdedorNombre}</span>
                     <br />
-                    Apuesta: {duelo.apuesta}
+                    <span style={{ color: 'darkblue'}}>Apuesta :</span> <span style={{ color: 'darkblue', fontWeight: 'bold' }}>{duelo.apuesta}</span>
                     <br />
                     {duelo.fecha && <p>{new Date(duelo.fecha).toLocaleDateString()}</p>}
                     <button onClick={handleBorrar}  className='btn btn-danger'>Borrar</button>

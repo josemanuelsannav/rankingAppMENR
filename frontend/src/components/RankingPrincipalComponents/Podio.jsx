@@ -37,8 +37,7 @@ const Podio = ({ jugadoresPodio, juegosEquipos, juegosIndividuales, duelos ,numJ
                 const jugadorAux = jugadores[j]; //jugador de la lista de jugadores
 
                 if (jugadorAux.id.toString() === jugador._id.toString()) { // si es el jugador que estamos buscando
-                    console.log("Jugador encontrado: ", jugadorAux);
-                    console.log("posiciones ", posiciones[j]);
+                    
                     posiciones[j] = posiciones[j] + 1;
                     partidasJugadas++;
                 }
@@ -59,7 +58,6 @@ const Podio = ({ jugadoresPodio, juegosEquipos, juegosIndividuales, duelos ,numJ
             return 0; // Evitar división por cero
         }
         const winrate = (posiciones[0] / partidasJugadas) * 100;
-        console.log("Partidas ganadas",partidasGanadas,"Partidas jugadas",partidasJugadas,"Winrate",winrate);
         return winrate.toFixed(2); // Devolver el winrate con dos decimales
     };
 
@@ -74,8 +72,7 @@ const Podio = ({ jugadoresPodio, juegosEquipos, juegosIndividuales, duelos ,numJ
                 const jugadorAux = jugadores[j]; //jugador de la lista de jugadores
 
                 if (jugadorAux.id.toString() === jugador._id.toString()) { // si es el jugador que estamos buscando
-                    console.log("Jugador encontrado: ", jugadorAux);
-                    console.log("posiciones ", posiciones[j]);
+                    
                     posiciones[j] = posiciones[j] + 1;
                     partidasJugadas++;
                     if(j===jugadores.length-1){

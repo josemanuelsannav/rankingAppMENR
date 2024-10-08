@@ -1,6 +1,6 @@
 import api from "../services/api";
 import React, { useState, useEffect } from 'react';
-import "../styles/HomePage.css";
+import "../styles/HomePage/HomePage.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
@@ -16,8 +16,9 @@ const HomePage = () => {
 
   const fetchJugadores = async () => {
     try {
-      console.log("Obteniendo los jugadores..." + process.env.REACT_APP_BASE_URL);
+      
       const { data } = (await api.get("/jugadores/todosLosJugadores")).data;
+      
       setJugadores(data);
     } catch (error) {
       console.log("Error al obtener los jugadores en el home page:  ", error);

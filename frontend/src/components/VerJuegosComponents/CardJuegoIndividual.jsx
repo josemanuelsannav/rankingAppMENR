@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import BarChart from '../RankingPrincipalComponents/BarChart';
 import api from '../../services/api';
 import { useNavigate } from 'react-router-dom';
+import { set } from 'mongoose';
 
 
 const CardJuegoIndividual = ({ juego, juegosIndividuales, juegosPorEquipos, jugadores,historico }) => {
@@ -13,11 +14,12 @@ const CardJuegoIndividual = ({ juego, juegosIndividuales, juegosPorEquipos, juga
   const [options, setOptions] = useState({});
   const [config, setConfig] = useState({});
   const navigate = useNavigate();
-
+  const [puntosEnJuego, setPuntosEnJuego] = useState(0);
   const handleStats = () => {
 
     setIsModalOpen(true);
     const { lista_jugadores, puntosEnJuego } = inicializarListaJugadores();
+    setPuntosEnJuego(puntosEnJuego);
     console.log(lista_jugadores);
 
     const numPartidas = partidas.length;
@@ -30,7 +32,7 @@ const CardJuegoIndividual = ({ juego, juegosIndividuales, juegosPorEquipos, juga
       labels: nombres,
       datasets: [
         {
-          label: "Partidas jugadas " + numPartidas + ", Puntos en juego: " + puntosEnJuego,
+          label: "Puntos ganados",
           data: valores,
           borderColor: 'rgba(75, 192, 192, 0.2)',
           backgroundColor: 'rgba(75, 192, 192, 1)',
@@ -170,6 +172,10 @@ const handleBorrar = async () => {
       <ModalContent>
         <CloseButton onClick={closeModal}>×</CloseButton>
         <h2>Estadísticas del Juego</h2>
+        <h5>Partidas jugadas: {partidas.length} <br /> 
+        Puntos en juego: {puntosEnJuego}
+        </h5>
+
         <BarChart data={data} config={config} options={options} />
       </ModalContent>
     </ModalOverlay>

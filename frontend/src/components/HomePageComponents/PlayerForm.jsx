@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import "../../styles/HomePage.css";
+import "../../styles/HomePage/CrearJugador.css";
 import api from '../../services/api';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+
+
 
 const PlayerForm = () => {
     const cloudinary_cloud = import.meta.env.VITE_CLOUDINARY_CLOUD;
@@ -56,6 +58,7 @@ const PlayerForm = () => {
             console.error("Error al subir la imagen a Cloudinary", error);
         }
     };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -72,10 +75,25 @@ const PlayerForm = () => {
             }
             console.log("Jugador a añadir:", jugador);
             const response = await api.post("/jugadores/nuevoJugador", jugador);
-            if (response.status === 201) {
-                console.log('Jugador creado con éxito:', response.data);
-                alert('Jugador creado con éxito');                  
-            }
+
+            if (response.status === 202) {
+                console.log('Ese nombre ya esta pillado: ', response.data.message);
+                alert('Ese nombre ya esta pillado: ' + response.data.message);
+            } else
+                if (response.status === 201) {
+                    console.log('Jugador creado con éxito:', response.data);
+                    alert('Jugador creado con éxito');
+                    setJugador({
+                        nombre: "",
+                        foto: "",
+                        puntuacion: 0,
+                        winrate: 0
+                    });
+                    setFileName("");
+                    setImagePreview(null);
+                    window.location.reload();
+
+                }
 
         } catch (error) {
             console.log("Error al añadir el jugador: ", error);
@@ -111,7 +129,7 @@ const PlayerForm = () => {
                 <button type="submit" className="btn btn-primary btn-custom-width">Añadir jugador</button>
             </form>
             <br />
-            <button id="go-to-view2" type="button" className="btn btn-success" onClick={() => navigate("/RankingPrincipal")}>EMPEZAR</button>
+            <button id="go-to-view2" type="button" className="btn btn-success" onClick={() => navigate("/RankingPrincipal")}>ENTRAR</button>
             <br />
         </div>
     );

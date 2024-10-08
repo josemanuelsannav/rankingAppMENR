@@ -20,12 +20,15 @@ const TopBar = ({ jugadores, historico }) => {
     };
 
     const nombres_jugadores = jugadores.map(jugador => jugador.nombre);
+
     const dias = historico.map(historico => {
         const fecha = new Date(historico.fecha);
         const fechaFormateada = fecha.toISOString().split('T')[0]; // Obtiene solo el año, mes y día
         return `${fechaFormateada} ${historico.nombre}`;
     });
+
     const datos = [];
+
     for (const nombre of nombres_jugadores) {
         const posiciones = [];
 
@@ -50,7 +53,7 @@ const TopBar = ({ jugadores, historico }) => {
             posiciones: posiciones
         });
     }
-    console.log('Datos:', datos);
+
     const coloresPredefinidos = [
         '#FF0000', // Rojo
         '#00FF00', // Verde
@@ -64,6 +67,7 @@ const TopBar = ({ jugadores, historico }) => {
         '#FF7F50', // naranja
         '#0F84EB'  // azul
     ];
+    
     const data = {
         labels: dias,
         datasets: datos.map((persona, index) => ({

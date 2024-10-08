@@ -1,6 +1,9 @@
 import React from 'react';
 import BarChart from './BarChart'; // Importa el componente de la gráfica de barras
 import '../../styles/JugadorStatsModal.css';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const JugadorStatsModal = ({ jugador, onClose, juegosEquipos, juegosIndividuales, duelos, numJugadores }) => {
     if (!jugador) return null;
@@ -21,8 +24,7 @@ const JugadorStatsModal = ({ jugador, onClose, juegosEquipos, juegosIndividuales
                 const jugadorAux = jugadores[j]; //jugador de la lista de jugadores
 
                 if (jugadorAux.id.toString() === jugador._id.toString()) { // si es el jugador que estamos buscando
-                    console.log("Jugador encontrado: ", jugadorAux);
-                    console.log("posiciones ", posiciones[j]);
+                    
                     posiciones[j] = posiciones[j] + 1;
                     partidasJugadas++;     
                     if(j===jugadores.length-1){
@@ -95,10 +97,20 @@ const JugadorStatsModal = ({ jugador, onClose, juegosEquipos, juegosIndividuales
         labels: labels,
         datasets: [
             {
-                label: "Partidas jugadas: " + partidasJugadas+"  Partidas Ultimo: "+ partidasUltimo,
+                label: 'Veces en esa posición',
                 data: posiciones,
-                borderColor: 'rgba(75, 192, 192, 0.2)',
-                backgroundColor: 'rgba(75, 192, 192, 1)',
+                borderColor: [
+                    'rgba(255, 206, 86, 0.2)', // Amarillo
+                    'rgba(201, 203, 207, 0.2)', // Gris
+                    'rgba(153, 102, 51, 0.2)',  // Marrón
+                    ...Array(posiciones.length - 3).fill('rgba(75, 192, 192, 0.2)') // Resto de las barras
+                ],
+                backgroundColor: [
+                    'rgba(255, 206, 86, 1)', // Amarillo
+                    'rgba(201, 203, 207, 1)', // Gris
+                    'rgba(153, 102, 51, 1)',  // Marrón
+                    ...Array(posiciones.length - 3).fill('rgba(75, 192, 192, 1)') // Resto de las barras
+                ],
             }
         ]
     };
@@ -116,9 +128,20 @@ const JugadorStatsModal = ({ jugador, onClose, juegosEquipos, juegosIndividuales
         plugins: {
             legend: {
                 position: 'top',
+                labels: {
+                    // Usamos el estilo de punto y asignamos el color de la cuarta barra
+                    usePointStyle: true,
+                    pointStyle: 'rect', // Cambia el estilo del punto
+                    generateLabels: function (chart) {
+                        let legend = ChartJS.defaults.plugins.legend.labels.generateLabels(chart);
+                        legend[0].fillStyle = chart.data.datasets[0].backgroundColor[3]; // Color de la cuarta barra
+                        return legend;
+                    }
+                }
             }
         }
     };
+
     const config = {
         type: 'bar',
         data: data,
@@ -142,13 +165,13 @@ const JugadorStatsModal = ({ jugador, onClose, juegosEquipos, juegosIndividuales
         labels: nombres_contrincantes,
         datasets: [
             {
-                label: "Duelos ganados: " + ganadas.reduce((acumulador, win) => acumulador + win, 0),
+                label: "Duelos ganados" ,
                 data: ganadas,
                 backgroundColor: ['rgba(75, 192, 192, 0.5)'],
                 borderColor: ['rgba(75, 192, 192, 1)'],
                 borderWidth: 1
             }, {
-                label: "Duelos perdidos: " + perdidas.reduce((acumulador, win) => acumulador + win, 0), // etiqueta para la segunda barra
+                label: "Duelos perdidos" , // etiqueta para la segunda barra
                 data: perdidas, // valores para la segunda barra
                 backgroundColor: ['rgba(255, 99, 132, 0.5)'],
                 borderColor: ['rgba(255, 99, 132, 0.5)'],
@@ -174,6 +197,23 @@ const JugadorStatsModal = ({ jugador, onClose, juegosEquipos, juegosIndividuales
             }
         },
     };
+
+    const optionsDuelos = {
+        responsive: true,
+        maintainAspectRatio: false, // Permite que el gráfico se ajuste al tamaño del contenedor
+
+        scales: {
+            y: {
+                beginAtZero: true,
+            },
+        },
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+            }
+        }
+    };
     ////////////////////////////////////////////
 
 
@@ -182,14 +222,21 @@ const JugadorStatsModal = ({ jugador, onClose, juegosEquipos, juegosIndividuales
             <div className="modal-content-jugador">
                 <button className="close-button-jugador" onClick={onClose}>X</button>
                 <h1>{jugador.nombre}</h1>
-                <h2>Partidas jugadas</h2>
+                <h6>
+                    Partidas jugadas: {partidasJugadas}<br />
+                    Partidas ultimo: {partidasUltimo}
+                </h6>
                 <div className="chart-container-jugador">
                     <BarChart data={data} config={config} options={options} />
                 </div>
                 <br />
                 <h2>Duelos</h2>
+                <h6>
+                    Total ganados : { ganadas.reduce((acumulador, win) => acumulador + win, 0)}<br />
+                    Total perdidos : {perdidas.reduce((acumulador, win) => acumulador + win, 0)}
+                </h6>
                 <div className="chart-container-jugador">
-                    <BarChart data={dataDuelos} config={configDuelos} options={options} />
+                    <BarChart data={dataDuelos} config={configDuelos} options={optionsDuelos} />
                 </div>
             </div>
         </div>

@@ -4,6 +4,7 @@ import TopBar from '../components/VerJuegosComponents/TopBar';
 import CardJuegoEquipo from '../components/VerJuegosComponents/CardJuegoEquipo';
 import CardJuegoIndividual from '../components/VerJuegosComponents/CardJuegoIndividual';
 import { set } from 'mongoose';
+
 const VerJuegosPage = () => {
   const [juegosIndividuales, setJuegosIndividuales] = useState([]);
   const [juegosPorEquipos, setJuegosPorEquipos] = useState([]);
@@ -40,7 +41,10 @@ const VerJuegosPage = () => {
   const fetchJugadores = async () => {
     try {
       const { data } = (await api.get("/jugadores/todosLosJugadores")).data;
-      setJugadores(data);
+      const sortedData = data.sort((a, b) => a.nombre.localeCompare(b.nombre));
+
+      setJugadores(sortedData);
+  
     } catch (error) {
       console.log("Error al obtener los jugadores:  ", error);
     }
@@ -137,8 +141,8 @@ const VerJuegosPage = () => {
     }
   }, [dataFetched, juegosIndividuales, juegosPorEquipos, jugadores]);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
+  if (loading) return <LoadingScreen />;
+  if (error) return <LoadingScreen />;
 
   return (
     <div>
@@ -191,6 +195,49 @@ const VerJuegosPage = () => {
       </div>
     </div>
   );
+
+ 
 }
 
+import styled, { keyframes } from 'styled-components';
+
+const LoadingScreen = () => {
+  return (
+      <LoadingContainer>
+          <Spinner />
+          <LoadingText>Cargando...</LoadingText>
+      </LoadingContainer>
+  );
+};
+
+// Animación de rotación
+const spin = keyframes`
+0% { transform: rotate(0deg); }
+100% { transform: rotate(360deg); }
+`;
+
+// Estilos personalizados usando styled-components
+const LoadingContainer = styled.div`
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+height: 100vh;
+background-color: #f0f0f0;
+`;
+
+const Spinner = styled.div`
+border: 8px solid #f3f3f3;
+border-top: 8px solid #3498db;
+border-radius: 50%;
+width: 60px;
+height: 60px;
+animation: ${spin} 2s linear infinite;
+`;
+
+const LoadingText = styled.p`
+margin-top: 20px;
+font-size: 18px;
+color: #333;
+`;
 export default VerJuegosPage

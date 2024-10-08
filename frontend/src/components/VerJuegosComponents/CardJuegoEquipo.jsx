@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import BarChart from '../RankingPrincipalComponents/BarChart';
 import api from '../../services/api';
 import { useNavigate } from 'react-router-dom';
+import { set } from 'mongoose';
 
 const CardJuegoEquipo = ({ juego, juegosIndividuales, juegosPorEquipos, jugadores }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -11,7 +12,7 @@ const CardJuegoEquipo = ({ juego, juegosIndividuales, juegosPorEquipos, jugadore
   const [options, setOptions] = useState({});
   const [config, setConfig] = useState({});
   const navigate = useNavigate();
-
+  const [puntosEnJuego, setPuntosEnJuego] = useState(0);
 
 
   const closeModal = () => {
@@ -63,7 +64,6 @@ const CardJuegoEquipo = ({ juego, juegosIndividuales, juegosPorEquipos, jugadore
         }
       }
     }
-    console.log(lista_jugadores);
     return { lista_jugadores, puntosEnJuego };
   };
 
@@ -85,7 +85,7 @@ const CardJuegoEquipo = ({ juego, juegosIndividuales, juegosPorEquipos, jugadore
 
     setIsModalOpen(true);
     const { lista_jugadores, puntosEnJuego } = inicializarListaJugadores();
-    console.log(lista_jugadores);
+    setPuntosEnJuego(puntosEnJuego);
     lista_jugadores.sort((a, b) => b.puntos - a.puntos);
 
     const numPartidas = partidas.length;
@@ -97,7 +97,7 @@ const CardJuegoEquipo = ({ juego, juegosIndividuales, juegosPorEquipos, jugadore
       labels: nombres,
       datasets: [
         {
-          label: "Partidas jugadas " + numPartidas + ", Puntos en juego: " + puntosEnJuego,
+          label: "Puntos obtenidos",
           data: valores,
           borderColor: 'rgba(75, 192, 192, 0.2)',
           backgroundColor: 'rgba(75, 192, 192, 1)',
@@ -173,6 +173,9 @@ const CardJuegoEquipo = ({ juego, juegosIndividuales, juegosPorEquipos, jugadore
           <ModalContent>
             <CloseButton onClick={closeModal}>×</CloseButton>
             <h2>Estadísticas del Juego</h2>
+            <h5>Partidas jugadas: {partidas.length} <br />
+              Puntos en juego: {puntosEnJuego}
+            </h5>
             <BarChart data={data} config={config} options={options} />
           </ModalContent>
         </ModalOverlay>
