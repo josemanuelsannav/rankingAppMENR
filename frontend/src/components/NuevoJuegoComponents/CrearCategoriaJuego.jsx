@@ -15,6 +15,7 @@ const CrearCategoriaJuego = () => {
         setJuegoCategoria({
             ...juegoCategoria,
             [name]: value,
+            rankingId: localStorage.getItem('rankingId') || ""
         });
     };
 

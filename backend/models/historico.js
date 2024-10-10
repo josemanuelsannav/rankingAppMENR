@@ -15,7 +15,8 @@ const historicoSchema = new mongoose.Schema({
         type: [jugadorSchema], // Usar el subesquema para definir el campo jugadores
         default: []
     },
-    fecha: Date
+    fecha: Date,
+    rankingId: String
 });
 
 const Historico = mongoose.model('Historico', historicoSchema);

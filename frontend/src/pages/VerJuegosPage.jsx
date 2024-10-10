@@ -19,18 +19,18 @@ const VerJuegosPage = () => {
   const [juegosSinAlterar, setJuegosSinAlterar] = useState([]);
   const [selectedJugador, setSelectedJugador] = useState('');
 
-  const fetchJuegosIndividuales = async () => {
+  const fetchJuegosIndividuales = async (id) => {
     try {
-      const { data } = (await api.get("/juegosIndividuales/todosLosJuegosIndividuales")).data;
+      const { data } = (await api.get(`/juegosIndividuales/todosLosJuegosIndividuales/${id}`)).data;
       setJuegosIndividuales(data);
     } catch (error) {
       console.log("Error al obtener los juegos individuales:  ", error);
     }
   };
 
-  const fetchJuegosPorEquipos = async () => {
+  const fetchJuegosPorEquipos = async (id) => {
     try {
-      const { data } = (await api.get("/juegosEquipos/todosLosJuegosEquipo")).data;
+      const { data } = (await api.get(`/juegosEquipos/todosLosJuegosEquipo/${id}`)).data;
       setJuegosPorEquipos(data);
 
     } catch (error) {
@@ -38,9 +38,9 @@ const VerJuegosPage = () => {
     }
   };
 
-  const fetchJugadores = async () => {
+  const fetchJugadores = async (id) => {
     try {
-      const { data } = (await api.get("/jugadores/todosLosJugadores")).data;
+      const { data } = (await api.get(`/jugadores/todosLosJugadores/${id}`)).data;
       const sortedData = data.sort((a, b) => a.nombre.localeCompare(b.nombre));
 
       setJugadores(sortedData);
@@ -50,18 +50,18 @@ const VerJuegosPage = () => {
     }
   };
 
-  const fetchHistorico = async () => {
+  const fetchHistorico = async (id) => {
     try {
-      const { data } = (await api.get("/historico/todosLosHistoricos")).data;
+      const { data } = (await api.get(`/historico/todosLosHistoricos/${id}`)).data;
       setHistorico(data);
     } catch (error) {
       console.log("Error al obtener el historico:  ", error);
     }
   };
 
-  const fetchJuegosCategorias = async () => {
+  const fetchJuegosCategorias = async (id) => {
     try {
-      const { data } = (await api.get("/juegosCategoria/todosLosJuegosCategoria")).data;
+      const { data } = (await api.get(`/juegosCategoria/todosLosJuegosCategoria/${id}`)).data;
       data.sort((a, b) => a.nombre.localeCompare(b.nombre));
       setJuegosCategorias(data);
     } catch (error) {
@@ -120,11 +120,12 @@ const VerJuegosPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await fetchJuegosIndividuales();
-        await fetchJuegosPorEquipos();
-        await fetchJugadores();
-        await fetchHistorico();
-        await fetchJuegosCategorias();
+        const rankingId = localStorage.getItem('rankingId');
+        await fetchJuegosIndividuales(rankingId);
+        await fetchJuegosPorEquipos(rankingId);
+        await fetchJugadores(rankingId);
+        await fetchHistorico(rankingId);
+        await fetchJuegosCategorias(rankingId);
         setDataFetched(true);
       } catch (err) {
         setError(err);

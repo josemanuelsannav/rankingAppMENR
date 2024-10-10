@@ -15,7 +15,8 @@ const juegoEquipoSchema = new mongoose.Schema({
             puntos: Number,
         }
     ],
-    fecha : Date
+    fecha : Date,
+    rankingId: String
 });
 
 

@@ -11,14 +11,12 @@ import PlayerForm from '../components/HomePageComponents/PlayerForm';
 import ListadoJugadoresHomePage from "../components/HomePageComponents/ListadoJugadoresHomePage";
 ////////////////////////////////////////
 
-const HomePage = () => {
+const HomePage = ({rankingId}) => {
   const [jugadores, setJugadores] = useState([]);
-
   const fetchJugadores = async () => {
     try {
       
-      const { data } = (await api.get("/jugadores/todosLosJugadores")).data;
-      
+      const { data } = (await api.get(`/jugadores/todosLosJugadores/${rankingId}`)).data;
       setJugadores(data);
     } catch (error) {
       console.log("Error al obtener los jugadores en el home page:  ", error);
@@ -26,6 +24,9 @@ const HomePage = () => {
   };
 
   useEffect(() => {
+    if (rankingId) {
+      localStorage.setItem('rankingId', rankingId);
+    }
     fetchJugadores();
   }, []);
 
@@ -34,7 +35,7 @@ const HomePage = () => {
       <div className="title-container mb-3 mt-3">
         <h1>Bienvenido jugador</h1>
       </div>
-      <PlayerForm />
+      <PlayerForm rankingId={rankingId}/>
       
       <ListadoJugadoresHomePage jugadores={jugadores} />
     </div>

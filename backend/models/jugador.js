@@ -5,7 +5,7 @@ const jugadorSchema = new mongoose.Schema({
     nombre: String,
     foto: String,
     puntuacion: Number,
-    winrate: Number
+    rankingId: String,
 });
 
 

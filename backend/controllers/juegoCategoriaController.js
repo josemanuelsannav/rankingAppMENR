@@ -20,7 +20,8 @@ export const createJuegoCategoria = async (req, res) => {
 
 export const getAllJuegosCategoriass = async (req, res) => {
     try {
-        const juegoCategoria = await JuegoCategoria.find();
+        const rankingId = req.params.rankingId;
+        const juegoCategoria = await JuegoCategoria.find({rankingId:rankingId}).sort({ nombre: 1 });
         res.status(200).json({ success: true, data: juegoCategoria });
     } catch (error) {
         console.error("Error al obtener los juegoCategoria", error);

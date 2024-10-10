@@ -9,7 +9,7 @@ import styled from 'styled-components';
 
 
 
-const PlayerForm = () => {
+const PlayerForm = ({rankingId}) => {
     const cloudinary_cloud = import.meta.env.VITE_CLOUDINARY_CLOUD;
     const navigate = useNavigate();
     const [selectedFile, setSelectedFile] = useState(null);
@@ -20,7 +20,7 @@ const PlayerForm = () => {
         nombre: "",
         foto: "",
         puntuacion: 0,
-        winrate: 0
+        rankingId: rankingId
     });
 
     const handleInputChange = (e) => {
@@ -87,7 +87,7 @@ const PlayerForm = () => {
                         nombre: "",
                         foto: "",
                         puntuacion: 0,
-                        winrate: 0
+                        rankingId: rankingId
                     });
                     setFileName("");
                     setImagePreview(null);
@@ -127,9 +127,12 @@ const PlayerForm = () => {
                 </div>
 
                 <button type="submit" className="btn btn-primary btn-custom-width">Añadir jugador</button>
+                
             </form>
             <br />
             <button id="go-to-view2" type="button" className="btn btn-success" onClick={() => navigate("/RankingPrincipal")}>ENTRAR</button>
+            <br />
+            <button type="button" className="btn btn-danger"   onClick={() => navigate("/")}>SALIR</button>
             <br />
         </div>
     );

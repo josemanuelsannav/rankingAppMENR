@@ -7,7 +7,8 @@ import { parse } from "dotenv";
 
 export const getHistoricos = async (req, res) => {
     try {
-        const historicos = await Historico.find();
+        const rankingId = req.params.rankingId;
+        const historicos = await Historico.find({ rankingId: rankingId });
         res.status(200).json({ success: true, data: historicos });
     } catch (error) {
         console.error("Error al obtener los historicos", error);

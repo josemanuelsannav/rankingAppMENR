@@ -2,7 +2,8 @@ import mongoose from "mongoose";
 
 
 const juegoCategoriaSchema = new mongoose.Schema({
-    nombre: String
+    nombre: String,
+    rankingId : String
 });
 
 

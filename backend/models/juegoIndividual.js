@@ -10,7 +10,8 @@ const juegoIndividualSchema = new mongoose.Schema({
             puntos: Number
         }
     ],
-    fecha : Date
+    fecha : Date,
+    rankingId: String
 });
 
 

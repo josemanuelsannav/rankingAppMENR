@@ -2,10 +2,9 @@ import Jugador from "../models/jugador.js";
 import mongoose from "mongoose";
 
 export const getJugadores = async (req, res) => {
-    console.log("Obteniendo jugadores:" );
+    const { rankingId } = req.params;
     try {
-        const jugadores = await Jugador.find().sort({ puntuacion: -1 });
-        
+        const jugadores = await Jugador.find({rankingId: String(rankingId)}).sort({ puntuacion: -1 });
         res.status(200).json({ success: true, data: jugadores });
     } catch (error) {
         console.error("Error al obtener los jugadores", error);

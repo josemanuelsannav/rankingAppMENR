@@ -4,7 +4,8 @@ import Jugador from "../models/jugador.js";
 
 export const getJuegosEquipo = async (req, res) => {
     try {
-        const juegosEquipo = await JuegoEquipo.find();
+        const rankingId = req.params.rankingId;
+        const juegosEquipo = await JuegoEquipo.find({ rankingId: rankingId });
         res.status(200).json({ success: true, data: juegosEquipo });
     } catch (error) {
         console.error("Error al obtener los juegosEquipo", error);

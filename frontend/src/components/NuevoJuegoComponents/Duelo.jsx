@@ -10,9 +10,9 @@ const Duelo = () => {
    
 
     useEffect(() => {
-        const fetchJuegosCategorias = async () => {
+        const fetchJuegosCategorias = async (id) => {
             try {
-                const { data } = (await api.get("/juegosCategoria/todosLosJuegosCategoria")).data;
+                const { data } = (await api.get(`/juegosCategoria/todosLosJuegosCategoria/${id}`)).data;
                 data.sort((a, b) => a.nombre.localeCompare(b.nombre));
                 setJuegosCategorias(data);
             } catch (error) {
@@ -20,18 +20,19 @@ const Duelo = () => {
             }
         };
     
-        const fetchJugadores = async () => {
+        const fetchJugadores = async (id) => {
             try {
-                const { data } = (await api.get("/jugadores/todosLosJugadores")).data;
+                const { data } = (await api.get(`/jugadores/todosLosJugadores/${id}`)).data;
                 data.sort((a, b) => a.nombre.localeCompare(b.nombre));
                 setJugadores(data);
             } catch (error) {
-                console.log("Error al obtener los jugadores en el home page:  ", error);
+                console.log("Error al obtener los jugadores en el duelo:  ", error);
             }
         };
+        const rankingId =  localStorage.getItem('rankingId');
 
-        fetchJuegosCategorias();
-        fetchJugadores();
+        fetchJuegosCategorias(rankingId);
+        fetchJugadores(rankingId);
     }, []);
 
     const handleGuardarDuelo = async (e) => {
@@ -54,7 +55,7 @@ const Duelo = () => {
             alert("La apuesta debe ser un número positivo.");
             return;
         }
-
+        const rankingId = localStorage.getItem('rankingId');
 
         const dueloData = {
             nombre: nombreJuego,
@@ -63,6 +64,7 @@ const Duelo = () => {
             perdedor: perdedorId,
             perdedorNombre: perdedorNombre,
             apuesta: apuesta,
+            rankingId: rankingId
         };
 
 
@@ -87,7 +89,7 @@ const Duelo = () => {
                     console.error(`Error al actualizar la puntuación de los jugadores:`, error);
                 }
                 await new Promise(resolve => setTimeout(resolve, 500)); //medio segundo de espera para que se actualicen bien los datos
-                const jugadoresResponse = await api.get("/jugadores/todosLosJugadores");
+                const jugadoresResponse = await api.get(`/jugadores/todosLosJugadores/${rankingId}`);
                 const jugadoresHistorico = jugadoresResponse.data.data;
                 console.log('Jugadores historico:', jugadoresHistorico); // Añade este log para verificar los datos
 
@@ -95,9 +97,12 @@ const Duelo = () => {
                     nombre: nombreJuego,
                     jugadores: jugadoresHistorico,
                     fecha: new Date(),
-                    idJuego: response.data._id
+                    idJuego: response.data._id,
+                    rankingId: rankingId
                 };
+
                 const responseHistorico = await api.post('/historico/nuevoHistorico', historicoData);
+
                 if (responseHistorico.status === 201) {
                     console.log('Historico guardado con éxito');
                 } else {

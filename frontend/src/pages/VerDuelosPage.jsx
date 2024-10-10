@@ -15,8 +15,9 @@ const VerDuelosPage = () => {
     , []);
 
   const fetchDuelos = async () => {
+    const rankingId = localStorage.getItem('rankingId');
     try {
-      const { data } = (await api.get("/duelos/todosLosDuelos")).data;
+      const { data } = (await api.get(`/duelos/todosLosDuelos/${rankingId}`)).data;
       const duelosOrdenados = data.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
       setDuelos(duelosOrdenados);
     } catch (error) {

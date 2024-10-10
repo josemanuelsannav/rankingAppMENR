@@ -105,7 +105,7 @@ const TopBar = ({ jugadores, historico }) => {
                     <button id="ver-juegos-btn" onClick={() => navigate("/VerJuegosPage")} >Ver todos los juegos</button>
                     <button id="ver-duelos-btn" onClick={() => navigate("/VerDuelosPage")}>Ver duelos</button>
                     <button id="ver-historico-btn" onClick={openModal}>Ver historico</button>
-                    <button id="volver-al-home-btn" onClick={() => navigate("/")}>Volver al home</button>
+                    <button id="volver-al-home-btn" onClick={() => navigate(`/HomePage/?rankingId=${localStorage.getItem('rankingId')}`)}>Volver al home</button>
                 </div>
             </div>
 

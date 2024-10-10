@@ -8,7 +8,8 @@ const duelo = new mongoose.Schema({
     ganadorNombre: String,
     perdedor: String,
     perdedorNombre: String,
-    fecha : Date
+    fecha : Date,
+    rankingId: String
 });
 
 

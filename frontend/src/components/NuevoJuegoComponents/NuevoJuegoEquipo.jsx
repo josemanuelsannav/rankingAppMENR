@@ -19,9 +19,9 @@ const NuevoJuegoEquipo = () => {
     const navigate = useNavigate();
 
 
-    const fetchJuegosCategorias = async () => {
+    const fetchJuegosCategorias = async (id) => {
         try {
-            const { data } = (await api.get("/juegosCategoria/todosLosJuegosCategoria")).data;
+            const { data } = (await api.get(`/juegosCategoria/todosLosJuegosCategoria/${id}`)).data;
            data.sort((a, b) => a.nombre.localeCompare(b.nombre));
             setJuegosCategorias(data);
         } catch (error) {
@@ -29,9 +29,9 @@ const NuevoJuegoEquipo = () => {
         }
     };
 
-    const fetchJugadores = async () => {
+    const fetchJugadores = async (id) => {
         try {
-            const { data } = (await api.get("/jugadores/todosLosJugadores")).data;
+            const { data } = (await api.get(`/jugadores/todosLosJugadores/${id}`)).data;
             data.sort((a, b) => a.nombre.localeCompare(b.nombre));
             setJugadores(data);
         } catch (error) {
@@ -40,18 +40,20 @@ const NuevoJuegoEquipo = () => {
     };
 
     useEffect(() => {
-        fetchJuegosCategorias();
-        fetchJugadores();
+        const rankingId = localStorage.getItem('rankingId');
+        fetchJuegosCategorias(rankingId);
+        fetchJugadores(rankingId);
     }, []);
 
     const handleGuardarJuego = async (e) => {
         e.preventDefault();
         const selectElement = document.getElementById('miSelectId-juego-normal-2');
         const nombreJuego = selectElement.options[selectElement.selectedIndex].text;
-
+        const rankingId = localStorage.getItem('rankingId');
         const juegoData = {
             nombre: nombreJuego,
-            equipos: equipos
+            equipos: equipos,
+            rankingId: rankingId
         };
 
         try {
@@ -75,7 +77,7 @@ const NuevoJuegoEquipo = () => {
                 });
                 await new Promise(resolve => setTimeout(resolve, 500)); //medio segundo de espera para que se actualicen bien los datos
 
-                const jugadoresResponse = await api.get("/jugadores/todosLosJugadores");
+                const jugadoresResponse = await api.get(`/jugadores/todosLosJugadores/${rankingId}`);
                 const jugadoresHistorico = jugadoresResponse.data.data;
                 console.log('Jugadores historico:', jugadoresHistorico); // Añade este log para verificar los datos
 
@@ -83,7 +85,8 @@ const NuevoJuegoEquipo = () => {
                     nombre: nombreJuego,
                     jugadores: jugadoresHistorico,
                     fecha: new Date(),
-                    idJuego: response.data._id
+                    idJuego: response.data._id,
+                    rankingId: rankingId
                 };
                 const responseHistorico = await api.post('/historico/nuevoHistorico', historicoData);
                 if (responseHistorico.status === 201) {

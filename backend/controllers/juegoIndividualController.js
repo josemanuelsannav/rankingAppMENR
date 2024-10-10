@@ -4,7 +4,8 @@ import Jugador from "../models/jugador.js";
 
 export const getJuegosIndividuales = async (req, res) => {
     try {
-        const juegosIndividuales = await JuegoIndividual.find();
+        const rankingId = req.params.rankingId;
+        const juegosIndividuales = await JuegoIndividual.find({rankingId:rankingId});
         res.status(200).json({ success: true, data: juegosIndividuales });
     } catch (error) {
         console.error("Error al obtener los juegosIndividuales", error);

@@ -1,9 +1,11 @@
 import Duelo from "../models/duelo.js";
 import mongoose from "mongoose";
 import Jugador from "../models/jugador.js";
+
 export const getDuelos = async (req, res) => {
     try {
-        const duelos = await Duelo.find();
+        const rankingId = req.params.rankingId;
+        const duelos = await Duelo.find({ rankingId: rankingId });
         res.status(200).json({ success: true, data: duelos });
     } catch (error) {
         console.error("Error al obtener los duelos", error);
