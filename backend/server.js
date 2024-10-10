@@ -22,8 +22,7 @@ app.use(express.json());
 const PORT = process.env.PORT || 3000;
 
 app.use(cors({
-    origin: process.env.REACT_APP_BASE_URL, // Permite solicitudes desde este origen
-    //origin: "http://localhost:5173",
+    origin: process.env.REACT_APP_BASE_URL || "http://localhost:5173",
     credentials: true,
   }));
   app.listen(PORT, () => {
