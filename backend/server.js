@@ -27,11 +27,6 @@ app.use(cors({
     credentials: true,
 }));
 
-// Content Security Policy (CSP) configuration
-app.use((req, res, next) => {
-    res.setHeader("Content-Security-Policy", "default-src 'none'; script-src 'self' https://vercel.live; connect-src 'self' https://vercel.live");
-    next();
-});
 
 app.listen(PORT, () => {
     console.log('Server is running on ' + PORT);
