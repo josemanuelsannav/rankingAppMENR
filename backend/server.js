@@ -37,11 +37,7 @@ app.listen(PORT, () => {
     console.log('Server is running on ' + PORT);
 });
 
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  serverSelectionTimeoutMS: 5000 // Adjust timeout as needed
-});
+mongoose.connect(process.env.MONGO_URI);
 
 
 // Error handling

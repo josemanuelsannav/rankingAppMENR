@@ -15,7 +15,6 @@ const ListaRankings = ({ profile }) => {
     useEffect(() => {
         const fetchRankings = async () => {
             try {
-                console.log("Obtenemos los rankings del propietario: ", profile.email);
                 const resProp = await api.get("/rankings/rankingsPropietario/" + profile.email);
                 const resMiembro = await api.get("/rankings/rankingsMiembro/" + profile.email);
                 const { data: dataProp } = resProp.data;
@@ -53,9 +52,7 @@ const ListaRankings = ({ profile }) => {
         const validMiembros = miembros.filter(miembro => emailRegex.test(miembro));
 
         // Lógica para manejar la creación del ranking
-        console.log('Nombre:', nombre);
-        console.log('Dueño:', profile.email);
-        console.log('Miembros:', validMiembros);
+       
         try {
             const res = await api.post("/rankings/nuevoRanking/", {
                 nombre: nombre,
@@ -86,9 +83,7 @@ const ListaRankings = ({ profile }) => {
         const validMiembros = miembros.filter(miembro => emailRegex.test(miembro));
 
         // Lógica para manejar la edición del ranking
-        console.log('Nombre:', nombre);
-        console.log('Dueño:', profile.email);
-        console.log('Miembros:', validMiembros);
+       
         try {
             const res = await api.put(`/rankings/editarRanking/${editingRanking._id}`, {
                 nombre: nombre,

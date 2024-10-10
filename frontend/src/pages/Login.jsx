@@ -56,7 +56,6 @@ const Login = () => {
                         email: profileData.email,
                         nombre: profileData.name
                     };
-                    console.log(usuario);
                     api.post("/usuarios/nuevoUsuario/", usuario)
                         .then((res) => console.log(res))
                         .catch((err) => console.log(err));
@@ -121,7 +120,7 @@ const Login = () => {
                                     <h2 className="fw-bold mb-2 text-center">Sign in</h2>
                                     <p className="text-white-50 mb-3">Please enter your login and password!</p>
 
-                                    <MDBInput wrapperClass='mb-4 w-100' label='Email address' id='formControlLg' type='email' size="lg" />
+                                    <MDBInput wrapperClass='mb-4 w-100' label='Email address' id='formControlLg2' type='email' size="lg" />
                                     <MDBInput wrapperClass='mb-4 w-100' label='Password' id='formControlLg' type='password' size="lg" />
 
                                     <MDBCheckbox name='flexCheck' id='flexCheckDefault' className='mb-4' label='Remember password' />
