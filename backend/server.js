@@ -23,7 +23,7 @@ const PORT = process.env.PORT || 3000;
 
 // CORS configuration
 app.use(cors({
-    origin: process.env.REACT_APP_BASE_URL || "http://localhost:5173",
+    origin: process.env.REACT_APP_BASE_URL || "http://localhost:5173" || "https://ranking-app-menr-front.vercel.app",
     credentials: true,
 }));
 
