@@ -20,7 +20,9 @@ const app = express();
 app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
-console.log(process.env.PORT);
+console.log("+++++++++++++++++++++++++++");
+
+
 // CORS configuration
 app.use(cors({
     origin: process.env.REACT_APP_BASE_URL || "http://localhost:5173" ,
