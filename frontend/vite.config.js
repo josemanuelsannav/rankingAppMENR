@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      '@react-oauth/google': require.resolve('@react-oauth/google'),
+      '@react-oauth/google': '/node_modules/@react-oauth/google',
     },
   },
 });
