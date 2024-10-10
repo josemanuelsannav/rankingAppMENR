@@ -33,3 +33,13 @@ export const createUsuario = async (req, res) => {
         res.status(500).json({ success: false, message: "Error al guardar el usuario" });
     }
 };
+
+export const getTodosLosUsuarios = async (req, res) => {
+    try {
+        const usuarios = await Usuario.find();
+        res.status(200).json({ success: true, data: usuarios });
+    } catch (error) {
+        console.error("Error al obtener los usuarios", error);
+        res.status(500).json({ success: false, message: "Error al obtener los usuarios" });
+    }
+};
