@@ -3,7 +3,7 @@ import { GoogleLogin } from '@react-oauth/google';
 import { googleLogout, useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import api from "../services/api";
-import ListaRankings from '../components/LoginComponents/listaRankings';
+import ListaRankings from '../components/LoginComponents/ListaRankings.jsx';
 import {
     MDBBtn,
     MDBContainer,
