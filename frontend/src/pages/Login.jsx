@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { GoogleLogin } from '@react-oauth/google';
 import { googleLogout, useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import api from "../services/api";
@@ -78,31 +77,10 @@ const Login = () => {
 
             {profile ? (
                 <div>
-                    <div className="vh-100" >
-                        <MDBContainer className="container py-5 h-100">
-                            <MDBRow className="justify-content-center align-items-center h-100">
-                                <MDBCol md="12" xl="4">
-                                    <MDBCard style={{ borderRadius: '15px' }}>
-                                        <MDBCardBody className="text-center">
-                                            <div className="mt-3 mb-4">
-                                                <MDBCardImage src={profile.picture}
-                                                    className="rounded-circle" fluid style={{ width: '100px' }} />
-                                            </div>
-                                            <MDBTypography tag="h4">{profile.name}</MDBTypography>
-                                            <MDBCardText className="text-muted mb-4">
-                                                {profile.email} 
-                                            </MDBCardText>
-                                           
-                                            <MDBBtn rounded size="lg" onClick={logOut}>
-                                                Log out
-                                            </MDBBtn>
-                                        </MDBCardBody>
-                                    </MDBCard>
-                                </MDBCol>
-                            </MDBRow>
-                            
-                        </MDBContainer>
-                    </div>
+                    <img src={profile.image} alt={profile.name} />
+                    <h1>{profile.name}</h1>
+                    <h2>{profile.email}</h2>
+                    <button className='btn btn-danger' onClick={logOut}>Cerrar sesión</button>
                     <div>
                         <ListaRankings profile={profile} />
                     </div>
@@ -136,11 +114,7 @@ const Login = () => {
                                         Sign in with google
                                     </MDBBtn>
 
-                                    <MDBBtn className="mb-4 w-100" size="lg" style={{ backgroundColor: '#3b5998' }}>
-
-                                        Sign in with facebook
-                                    </MDBBtn>
-
+                                    
                                 </MDBCardBody>
                             </MDBCard>
 
