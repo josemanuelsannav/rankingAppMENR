@@ -21,6 +21,7 @@
     "canvas-confetti": "^1.9.3",
     "chart.js": "^4.4.4",
     "cloudinary": "^2.4.0",
+    "emailjs-com": "^3.2.0",
     "mdb-react-ui-kit": "^9.0.0",
     "primeflex": "^3.3.1",
     "primeicons": "^7.0.0",

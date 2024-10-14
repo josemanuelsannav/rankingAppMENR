@@ -5,6 +5,7 @@ import NuevoJuegoPage from './pages/NuevoJuegoPage.jsx'
 import VerJuegosPage from './pages/VerJuegosPage.jsx'
 import VerDuelosPage from './pages/VerDuelosPage.jsx'
 import Login from './pages/Login.jsx'
+import AceptarInvitacion from './components/LoginComponents/AceptarInvitacion.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -19,7 +20,7 @@ function App() {
           <Route path="/NuevoJuegoPage" element={<NuevoJuegoPage />} />
           <Route path="/VerJuegosPage" element={<VerJuegosPage />} />
           <Route path="/VerDuelosPage" element={<VerDuelosPage />} />
-          
+          <Route path="/aceptar-invitacion" element={<AceptarInvitacion />} />
         </Routes>
       </div>
      

@@ -77,7 +77,7 @@ const Login = () => {
 
             {profile ? (
                 <div>
-                    <img src={profile.image} alt={profile.name} />
+                    <img src={profile.picture} alt={profile.name} />
                     <h1>{profile.name}</h1>
                     <h2>{profile.email}</h2>
                     <button className='btn btn-danger' onClick={logOut}>Cerrar sesión</button>

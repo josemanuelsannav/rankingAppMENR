@@ -4,7 +4,14 @@ import mongoose from "mongoose";
 const rankingSchema = new mongoose.Schema({
     nombre: String,
     propietario: String,
-    miembros: [{ type: String }],
+    miembros: [{
+        email: {
+            type: String
+        },
+        estadoInvitacion: {
+            type: String
+        }
+    }],
 });
 
 

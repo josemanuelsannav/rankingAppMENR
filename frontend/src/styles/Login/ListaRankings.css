@@ -1,0 +1,9 @@
+.modal-content {
+    width: 50%; /* Ancho por defecto */
+}
+
+@media (max-width: 768px) {
+    .modal-content.modal-mobile {
+        width: 90%; /* Ancho para dispositivos móviles */
+    }
+}
