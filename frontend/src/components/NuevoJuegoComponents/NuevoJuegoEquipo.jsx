@@ -17,12 +17,13 @@ const NuevoJuegoEquipo = () => {
     const [showIntegrantesModal, setShowIntegrantesModal] = useState(false);
     const [currentEquipoIndex, setCurrentEquipoIndex] = useState(null);
     const navigate = useNavigate();
-
+    const [showInvitadosModal, setShowInvitadosModal] = useState(false);
+    const [nombreInvitado, setNombreInvitado] = useState(''); 
 
     const fetchJuegosCategorias = async (id) => {
         try {
             const { data } = (await api.get(`/juegosCategoria/todosLosJuegosCategoria/${id}`)).data;
-           data.sort((a, b) => a.nombre.localeCompare(b.nombre));
+            data.sort((a, b) => a.nombre.localeCompare(b.nombre));
             setJuegosCategorias(data);
         } catch (error) {
             console.log("Error al obtener los juegosCategorias en el nuevo juego individual:  ", error);
@@ -185,6 +186,18 @@ const NuevoJuegoEquipo = () => {
         setEquipos(equipos.filter((_, i) => i !== index));
     };
 
+    const handleAddInvitado = () => {
+        // Lógica para añadir el invitado
+        console.log('Nombre del invitado:', nombreInvitado);
+        const invitado = {
+            nombre: "Invitado " + nombreInvitado,
+            _id: new mongoose.Types.ObjectId() // Generar un ObjectId válido
+          };
+        setEquipoIntegrantes([...equipoIntegrantes, invitado]);
+        setShowInvitadosModal(false);
+        setNombreInvitado('');
+    };
+
     return (
         <div>
             <div className="container-content">
@@ -205,9 +218,9 @@ const NuevoJuegoEquipo = () => {
                             </select>
                         </span>
                         <br />
-                        <button type="submit"  className="btn btn-success">Guardar Juego</button>
+                        <button type="submit" className="btn btn-success">Guardar Juego</button>
                         <br />
-                        <button type="button" onClick={handleAñadirEquipo}  className="btn btn-primary">Añadir equipo</button>
+                        <button type="button" onClick={handleAñadirEquipo} className="btn btn-primary">Añadir equipo</button>
                         <br />
                         <div className="equipos-list">
                             <h2>Equipos</h2>
@@ -248,6 +261,7 @@ const NuevoJuegoEquipo = () => {
                                     required
                                 />
                             </div>
+                            <br />
                             <div>
                                 <label >Puntuación:</label>
                                 <input
@@ -258,6 +272,7 @@ const NuevoJuegoEquipo = () => {
                                     required
                                 />
                             </div>
+                            <br />
                             <div>
                                 <label>Integrantes:</label>
                                 <ul>
@@ -283,7 +298,9 @@ const NuevoJuegoEquipo = () => {
                         <Button onClick={() => setShowIntegrantesModal(true)}>
                             Añadir integrante
                         </Button>
-
+                        <Button onClick={() => setShowInvitadosModal(true)}>
+                            Añadir Invitado
+                        </Button>
                     </DialogActions>
                     {showIntegrantesModal && (
                         <div className="modal">
@@ -300,6 +317,23 @@ const NuevoJuegoEquipo = () => {
                                     ))}
                                 </ul>
                                 <button type="button" onClick={() => setShowIntegrantesModal(false)}>Cerrar</button>
+                            </div>
+                        </div>
+                    )}
+                    {showInvitadosModal && (
+                        <div className="modal">
+                            <div className="modal-content">
+                                <h2>Añadir Invitado</h2>
+                                <input
+                                    type="text"
+                                    value={nombreInvitado}
+                                    onChange={(e) => setNombreInvitado(e.target.value)}
+                                    placeholder="Nombre del invitado"
+                                />
+                                <br />
+                                <button onClick={handleAddInvitado}>Añadir</button>
+                                <br />
+                                <button onClick={() => setShowInvitadosModal(false)}>Cerrar</button>
                             </div>
                         </div>
                     )}

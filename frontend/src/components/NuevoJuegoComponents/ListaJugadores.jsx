@@ -10,11 +10,11 @@ const ListaJugadores = ({ jugadores, setVisibleJugadores }) => {
   const [visibleJugadores, setLocalVisibleJugadores] = useState([]);
   const [restoJugadores, setRestoJugadores] = useState([]);
   const [showModal, setShowModal] = useState(false);
-
+  const [showModalInvitado, setShowModalInvitado] = useState(false);
+  const [nombreInvitado, setNombreInvitado] = useState(''); // Estado para el nombre del invitado
 
 
   useEffect(() => {
-    console.log("aqui");
     const nombresFiltrados = ["Andrés", "Jose", "Juanma", "Sergio", "Alberto", "Juanjo", "Nico", "Javi"];
     const jugadoresFiltrados = jugadores.filter(jugador => nombresFiltrados.includes(jugador.nombre));
     const jugadoresNoFiltrados = jugadores.filter(jugador => !nombresFiltrados.includes(jugador.nombre));
@@ -39,7 +39,6 @@ const ListaJugadores = ({ jugadores, setVisibleJugadores }) => {
   };
 
   const moveJugadorUp = (index) => {
-    debugger;
     if (index === 0) return;
     const newVisibleJugadores = [...visibleJugadores];
     [newVisibleJugadores[index - 1], newVisibleJugadores[index]] = [newVisibleJugadores[index], newVisibleJugadores[index - 1]];
@@ -53,18 +52,33 @@ const ListaJugadores = ({ jugadores, setVisibleJugadores }) => {
     setLocalVisibleJugadores(newVisibleJugadores);
   };
 
+  const handleAddInvitado = () => {
+    // Lógica para añadir el invitado
+    console.log('Nombre del invitado:', nombreInvitado);
+    const invitado = {
+      nombre: "Invitado " + nombreInvitado,
+      _id: Math.random().toString(36).substr(2, 9)
+
+    };
+    setLocalVisibleJugadores(visibleJugadores.concat(invitado));
+    setShowModalInvitado(false);
+    setNombreInvitado('');
+  };
+
   return (
     <div className="jugadores-container">
       <br />
       <h2>Participantes </h2>
       <Button onClick={() => setShowModal(true)} variant="contained" color="primary">Añadir jugador</Button>
       <br />
+      <Button onClick={() => setShowModalInvitado(true)} variant="contained" color="secondary">Añadir invitado</Button>
+      <br />
       <br />
       <ul>
         {visibleJugadores.map((jugador, index) => (
           <li key={jugador._id}>
             {index + 1}.{jugador.nombre}
-            <button  onClick={() => removeJugador(jugador)} className="btn-icon">
+            <button onClick={() => removeJugador(jugador)} className="btn-icon">
               <img src={eliminarIcono} alt="Eliminar" style={{ width: '20px', height: '20px' }} />
             </button>
             <button onClick={() => moveJugadorUp(index)} type="button" className="btn-icon">
@@ -85,13 +99,29 @@ const ListaJugadores = ({ jugadores, setVisibleJugadores }) => {
                 <li key={jugador._id}>
                   {jugador.nombre}
                   <button onClick={() => addJugador(jugador)} className="btn-icon">
-                  <img src={addIcono} alt="Añadir" style={{ width: '20px', height: '20px' }} />
-
+                    <img src={addIcono} alt="Añadir" style={{ width: '20px', height: '20px' }} />
                   </button>
                 </li>
               ))}
             </ul>
             <button onClick={() => setShowModal(false)}>Cerrar</button>
+          </div>
+        </div>
+      )}
+      {showModalInvitado && (
+        <div className="modal">
+          <div className="modal-content">
+            <h2>Añadir Invitado</h2>
+            <input
+              type="text"
+              value={nombreInvitado}
+              onChange={(e) => setNombreInvitado(e.target.value)}
+              placeholder="Nombre del invitado"
+            />
+            <br />
+            <button onClick={handleAddInvitado}>Añadir</button>
+            <br />
+            <button onClick={() => setShowModalInvitado(false)}>Cerrar</button>
           </div>
         </div>
       )}

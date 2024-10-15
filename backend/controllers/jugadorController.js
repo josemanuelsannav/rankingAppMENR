@@ -39,6 +39,7 @@ export const actualizarPuntuacion = async (req, res) => {
         console.log("puntos es undefined", puntos);
         return res.status(400).send({ success: false, message: "Los puntos son obligatorios" });
     }
+    
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).send({ success: false, message: "No se encontró un jugador con el id proporcionado" });
     }

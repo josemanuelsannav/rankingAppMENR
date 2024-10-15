@@ -69,7 +69,7 @@ const NuevoJuegoIndividual = () => {
                 // Recorrer la lista de jugadores actualizados y hacer una solicitud PUT para cada uno
                 visibleJugadores.forEach(async (jugador, index) => {
                     try {
-
+                            
                         const putResponse = await api.put(`/jugadores/actualizarPuntuacion/${jugador._id}`, {
                             puntos: visibleJugadores.length - index - 1,
                         });
