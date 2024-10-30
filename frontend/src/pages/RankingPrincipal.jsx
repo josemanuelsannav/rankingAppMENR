@@ -107,6 +107,7 @@ const RankingPrincipal = () => {
     }
   };
 
+ 
 
   useEffect(() => {
     const storedRankingId = localStorage.getItem('rankingId');

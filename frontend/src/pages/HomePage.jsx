@@ -13,6 +13,7 @@ import ListadoJugadoresHomePage from "../components/HomePageComponents/ListadoJu
 
 const HomePage = ({rankingId}) => {
   const [jugadores, setJugadores] = useState([]);
+  
   const fetchJugadores = async () => {
     try {
       

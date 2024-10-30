@@ -41,7 +41,8 @@ const ListaRankings = ({ profile }) => {
         if (emailRegex.test(email)) {
             const miembroAux = {
                 email: email,
-                estadoInvitacion: 'Pendiente'
+                estadoInvitacion: 'Pendiente',
+                permiso: false
             }
             setMiembros([...miembros, miembroAux]);
             setEmail('');
@@ -136,6 +137,14 @@ const ListaRankings = ({ profile }) => {
     }
 
     const handleEntrar = (rankingId) => {
+        const rankingAux = rankingsMiembro.find(ranking => ranking._id === rankingId);
+        if (!rankingAux) {
+            localStorage.setItem('permiso', true);
+        }else{
+            const miembro = rankingAux.miembros.find(miembro => miembro.email === profile.email);
+            localStorage.setItem('permiso', miembro.permiso);
+        }
+  
         navigate(`/HomePage/?rankingId=${rankingId}`);
     };
 
@@ -172,6 +181,14 @@ const ListaRankings = ({ profile }) => {
                 }
             }
         }
+    };
+
+    const handleTogglePermiso = (email) => {
+        setMiembros(prevMiembros =>
+            prevMiembros.map(miembro =>
+                miembro.email === email ? { ...miembro, permiso: !miembro.permiso } : miembro
+            )
+        );
     };
 
     return (
@@ -263,6 +280,13 @@ const ListaRankings = ({ profile }) => {
                                     <div key={miembro.email} style={{ display: 'flex', alignItems: 'center' }}>
                                         <span>{miembro.email}</span>
                                         <button onClick={() => handleRemoveMember(miembro.email)} style={{ marginLeft: '10px' }}>Eliminar</button>
+                                        <span>Permisos :</span>
+                                        <input
+                                            type="checkbox"
+                                            checked={miembro.permiso}
+                                            onChange={() => handleTogglePermiso(miembro.email)}
+                                            style={{ marginLeft: '10px' }}
+                                        />
                                     </div>
                                 ))}
                         </div>

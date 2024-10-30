@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
@@ -10,6 +10,13 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 const TopBar = ({ jugadores, historico }) => {
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [permiso, setPermisos] = useState(false);
+
+    useEffect(() => {
+        // Leer el valor de permiso desde el local storage
+        const permisoLocal = localStorage.getItem('permiso');
+        setPermisos(permisoLocal === 'true');
+    }, []);
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -67,7 +74,7 @@ const TopBar = ({ jugadores, historico }) => {
         '#FF7F50', // naranja
         '#0F84EB'  // azul
     ];
-    
+
     const data = {
         labels: dias,
         datasets: datos.map((persona, index) => ({
@@ -90,7 +97,7 @@ const TopBar = ({ jugadores, historico }) => {
             y: {
                 reverse: true, // Invertir el eje Y
             },
-            
+
         },
     };
 
@@ -101,7 +108,11 @@ const TopBar = ({ jugadores, historico }) => {
             <div className="header">
                 <h1 id="titulo">RANKING "MUNDIAL"</h1>
                 <div className="botones-container">
-                    <button id="nuevo-juego-btn" onClick={() => navigate("/NuevoJuegoPage")}>Nuevo juego</button>
+                    {permiso && (
+                        <button id="nuevo-juego-btn" onClick={() => navigate("/NuevoJuegoPage")}>
+                            Nuevo juego
+                        </button>
+                    )}
                     <button id="ver-juegos-btn" onClick={() => navigate("/VerJuegosPage")} >Ver todos los juegos</button>
                     <button id="ver-duelos-btn" onClick={() => navigate("/VerDuelosPage")}>Ver duelos</button>
                     <button id="ver-historico-btn" onClick={openModal}>Ver historico</button>

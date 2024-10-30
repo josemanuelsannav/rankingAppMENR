@@ -10,6 +10,9 @@ const rankingSchema = new mongoose.Schema({
         },
         estadoInvitacion: {
             type: String
+        },
+        permiso : {
+            type: Boolean
         }
     }],
 });
