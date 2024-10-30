@@ -165,7 +165,7 @@ const ListaRankings = ({ profile }) => {
                         from_email: data.propietario,  // El correo del propietario del ranking
                         to_email: miembro.email,  // El correo del miembro
                         message: 'Te invitamos a nuestro ranking!',
-                        link: `http://localhost:5173/aceptar-invitacion?email=${encodeURIComponent(miembro.email)}&rankingId=${data._id}`,
+                        link: `https://ranking-app-menr-front.vercel.app/aceptar-invitacion?email=${encodeURIComponent(miembro.email)}&rankingId=${data._id}`,
                     };
 
                     const response = await emailjs.send(
