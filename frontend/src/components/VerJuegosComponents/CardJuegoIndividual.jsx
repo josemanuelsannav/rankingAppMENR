@@ -6,15 +6,21 @@ import BarChart from '../RankingPrincipalComponents/BarChart';
 import api from '../../services/api';
 import { useNavigate } from 'react-router-dom';
 import { set } from 'mongoose';
+import "../../styles/VerJuegos/ModalComentarios.css";
 
+const CardJuegoIndividual = ({ juego, juegosIndividuales, juegosPorEquipos, jugadores, historico }) => {
 
-const CardJuegoIndividual = ({ juego, juegosIndividuales, juegosPorEquipos, jugadores,historico }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [data, setData] = useState({});
   const [options, setOptions] = useState({});
   const [config, setConfig] = useState({});
   const navigate = useNavigate();
   const [puntosEnJuego, setPuntosEnJuego] = useState(0);
+  const [verMasModal, setVerMasModal] = useState(false);
+  const [comentarios, setComentarios] = useState([]);
+  const [nuevoComentario, setNuevoComentario] = useState('');
+  const [user, setUser] = useState(null);
+
   const handleStats = () => {
 
     setIsModalOpen(true);
@@ -94,10 +100,10 @@ const CardJuegoIndividual = ({ juego, juegosIndividuales, juegosPorEquipos, juga
           const player = lista_jugadores.find(j => j.nombre === jugador.nombre);
           if (!player) {
             let jugador2 = null;
-              jugador2 = {
-                nombre: jugador.nombre,
-                puntos: jugador.puntos
-              };
+            jugador2 = {
+              nombre: jugador.nombre,
+              puntos: jugador.puntos
+            };
             lista_jugadores.push(jugador2);
 
           } else {
@@ -130,10 +136,10 @@ const CardJuegoIndividual = ({ juego, juegosIndividuales, juegosPorEquipos, juga
   };
 
 
-const handleBorrar = async () => {
+  const handleBorrar = async () => {
     try {
       const isConfirmed = window.confirm("¿Estás seguro de que deseas borrar este juego?");
-    if (!isConfirmed) return;
+      if (!isConfirmed) return;
 
       await api.delete(`/historico/eliminarHistorico/${juego._id}`);
       await api.delete(`/juegosIndividuales/eliminarJuegoIndividual/${juego._id}`);
@@ -142,45 +148,107 @@ const handleBorrar = async () => {
       console.log("Error al borrar el juego: ", error);
     }
 
-}
-  
+  }
+
+  const handleComentarios = async (idJuego) => {
+    const { data } = (await api.get(`/comentarios/todosLosComentarios/${idJuego}`)).data; 
+    setComentarios(data);
+    console.log(comentarios);
+    setVerMasModal(true);
+    setUser(localStorage.getItem('profile'));
+  }
+
+  const handleAñadirComentario = async () => {
+    if (nuevoComentario.trim() === '') return;
+    const comentario = {
+      comentario: nuevoComentario,
+      fecha: new Date().toLocaleString(),
+      juegoId: juego._id,
+      usuarioId: user,
+    };
+
+    try {
+      // Guardar el comentario en la base de datos
+      await api.post(`/comentarios/nuevoComentario`, comentario);
+      // Actualizar la lista de comentarios
+      setComentarios([...comentarios, comentario]);
+      setNuevoComentario('');
+    } catch (error) {
+      console.error('Error al guardar el comentario:', error);
+    }
+  };
+
   return (
     <>
-    <Card key={juego._id} style={{ boxSizing: 'border-box', border: '3px solid orange' }}>
-    <CardBody>
-    <CardTitle style={{ fontSize: '2rem', fontWeight: 'bold' }}>{juego.nombre}</CardTitle>
-    <div>
-        <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
-          {juego.jugadores.map((jugador, index) => (
-            <li key={jugador._id}>
-              <div>
-                {index + 1}. {jugador.nombre}
-              </div>
-            </li>
-          ))}
-          <br />
-          {juego.fecha && <li>{new Date(juego.fecha).toLocaleDateString()}</li>}
-          <br />
-          <button onClick={handleStats} className='btn btn-primary' style={{ marginRight: '10px' }}>Stats</button>
-          <button onClick={handleBorrar}className='btn btn-danger'>Borrar</button>
-        </ul>
-      </div>
-    </CardBody>
-  </Card>
-  {isModalOpen && (
-    <ModalOverlay>
-      <ModalContent>
-        <CloseButton onClick={closeModal}>×</CloseButton>
-        <h2>Estadísticas del Juego</h2>
-        <h5>Partidas jugadas: {partidas.length} <br /> 
-        Puntos en juego: {puntosEnJuego}
-        </h5>
+      <Card key={juego._id} style={{ boxSizing: 'border-box', border: '3px solid orange' }}>
+        <CardBody>
+          <CardTitle style={{ fontSize: '2rem', fontWeight: 'bold' }}>{juego.nombre}</CardTitle>
+          <div>
+            <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
+              {juego.jugadores.map((jugador, index) => (
+                <li key={jugador._id}>
+                  <div>
+                    {index + 1}. {jugador.nombre}
+                  </div>
+                </li>
+              ))}
+              <br />
+              {juego.fecha && <li>{new Date(juego.fecha).toLocaleDateString()}</li>}
+              <br />
+              <button onClick={handleStats} className='btn btn-primary' style={{ marginRight: '10px' }}>Stats</button>
+              <button onClick={handleBorrar} className='btn btn-danger' style={{ marginRight: '10px' }}>Borrar</button>
+              <button onClick={() => handleComentarios(juego._id)} className='btn btn-warning'>Comentarios</button>
+            </ul>
+          </div>
+        </CardBody>
+      </Card>
+      {isModalOpen && (
+        <ModalOverlay>
+          <ModalContent>
+            <CloseButton onClick={closeModal}>×</CloseButton>
+            <h2>Estadísticas del Juego</h2>
+            <h5>Partidas jugadas: {partidas.length} <br />
+              Puntos en juego: {puntosEnJuego}
+            </h5>
 
-        <BarChart data={data} config={config} options={options} />
-      </ModalContent>
-    </ModalOverlay>
-  )}
-</>
+            <BarChart data={data} config={config} options={options} />
+          </ModalContent>
+        </ModalOverlay>
+      )}
+      {verMasModal && (
+        <ModalOverlay>
+          <ModalContent>
+            <CloseButton onClick={() => setVerMasModal(false)}>×</CloseButton>
+            <div className='titulo-container'>
+              <h2>Comentarios del juego</h2>
+            </div>
+            <div className='comentarios-container'>
+              {comentarios.map((comentario, index) => (
+                <div
+                  key={index}
+                  className={`comentario ${comentario.usuarioId ===  user ? 'comentario-derecha' : 'comentario-izquierda'}`}
+                >
+                  <p>{comentario.usuarioId}</p>
+                  <p>{comentario.comentario} </p>
+                  <p>{comentario.fecha}</p>
+                </div>
+              ))}
+            </div>
+            <div className='añadir-comentario footer'>
+              <input
+                type='text'
+                placeholder='Añade un comentario'
+                value={nuevoComentario}
+                onChange={(e) => setNuevoComentario(e.target.value)}
+              />
+              <button className='btn btn-primary' onClick={handleAñadirComentario}>
+                Añadir
+              </button>
+            </div>
+          </ModalContent>
+        </ModalOverlay>
+      )}
+    </>
   )
 }
 // Estilos personalizados usando styled-components

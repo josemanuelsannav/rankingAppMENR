@@ -144,7 +144,7 @@ const ListaRankings = ({ profile }) => {
             const miembro = rankingAux.miembros.find(miembro => miembro.email === profile.email);
             localStorage.setItem('permiso', miembro.permiso);
         }
-  
+        localStorage.setItem('profile', profile.email);
         navigate(`/HomePage/?rankingId=${rankingId}`);
     };
 

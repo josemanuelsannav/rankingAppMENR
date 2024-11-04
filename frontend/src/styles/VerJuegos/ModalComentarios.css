@@ -1,0 +1,38 @@
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  
+  .footer {
+    position: sticky;
+    bottom: 0;
+    background: white;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+  }
+.comentarios-container {
+    max-height: 300px; /* Ajusta la altura máxima según sea necesario */
+    overflow-y: auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+  }
+  
+  .comentario {
+    padding: 10px;
+    margin: 5px 0;
+    word-wrap: break-word; /* Permite que las palabras largas se dividan y ajusten al contenedor */
+    white-space: pre-wrap; /* Mantiene los saltos de línea y espacios en blanco */
+  
+  }
+  
+  .comentario-derecha {
+    text-align: right;
+    background-color: #f0f0f0;
+  }
+  
+  .comentario-izquierda {
+    text-align: left;
+    background-color: #e0e0e0;
+  }

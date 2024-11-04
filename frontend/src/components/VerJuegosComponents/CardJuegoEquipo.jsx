@@ -14,6 +14,11 @@ const CardJuegoEquipo = ({ juego, juegosIndividuales, juegosPorEquipos, jugadore
   const navigate = useNavigate();
   const [puntosEnJuego, setPuntosEnJuego] = useState(0);
 
+  const [verMasModal, setVerMasModal] = useState(false);
+  const [comentarios, setComentarios] = useState([]);
+  const [nuevoComentario, setNuevoComentario] = useState('');
+  const [user, setUser] = useState(null);
+
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -140,6 +145,33 @@ const CardJuegoEquipo = ({ juego, juegosIndividuales, juegosPorEquipos, jugadore
     setOptions(options);
     setConfig(config);
   };
+  const handleComentarios = async (idJuego) => {
+    const { data } = (await api.get(`/comentarios/todosLosComentarios/${idJuego}`)).data; 
+    setComentarios(data);
+    console.log(comentarios);
+    setVerMasModal(true);
+    setUser(localStorage.getItem('profile'));
+  }
+
+  const handleAñadirComentario = async () => {
+    if (nuevoComentario.trim() === '') return;
+    const comentario = {
+      comentario: nuevoComentario,
+      fecha: new Date().toLocaleString(),
+      juegoId: juego._id,
+      usuarioId: user,
+    };
+
+    try {
+      // Guardar el comentario en la base de datos
+      await api.post(`/comentarios/nuevoComentario`, comentario);
+      // Actualizar la lista de comentarios
+      setComentarios([...comentarios, comentario]);
+      setNuevoComentario('');
+    } catch (error) {
+      console.error('Error al guardar el comentario:', error);
+    }
+  };
 
   return (
     <>
@@ -162,7 +194,9 @@ const CardJuegoEquipo = ({ juego, juegosIndividuales, juegosPorEquipos, jugadore
               {juego.fecha && <li>{new Date(juego.fecha).toLocaleDateString()}</li>}
               <br />
               <button onClick={handleStats} className='btn btn-primary' style={{ marginRight: '10px' }}>Stats</button>
-              <button onClick={handleBorrar} className='btn btn-danger'>Borrar</button>
+              <button onClick={handleBorrar} className='btn btn-danger' style={{ marginRight: '10px' }}>Borrar</button>
+              <button onClick={() => handleComentarios(juego._id)} className='btn btn-warning'>Comentarios</button>
+
             </ul>
           </div>
         </CardBody>
@@ -177,6 +211,39 @@ const CardJuegoEquipo = ({ juego, juegosIndividuales, juegosPorEquipos, jugadore
               Puntos en juego: {puntosEnJuego}
             </h5>
             <BarChart data={data} config={config} options={options} />
+          </ModalContent>
+        </ModalOverlay>
+      )}
+      {verMasModal && (
+        <ModalOverlay>
+          <ModalContent>
+            <CloseButton onClick={() => setVerMasModal(false)}>×</CloseButton>
+            <div className='titulo-container'>
+              <h2>Comentarios del juego</h2>
+            </div>
+            <div className='comentarios-container'>
+              {comentarios.map((comentario, index) => (
+                <div
+                  key={index}
+                  className={`comentario ${comentario.usuarioId ===  user ? 'comentario-derecha' : 'comentario-izquierda'}`}
+                >
+                  <p>{comentario.usuarioId}</p>
+                  <p>{comentario.comentario} </p>
+                  <p>{comentario.fecha}</p>
+                </div>
+              ))}
+            </div>
+            <div className='añadir-comentario footer'>
+              <input
+                type='text'
+                placeholder='Añade un comentario'
+                value={nuevoComentario}
+                onChange={(e) => setNuevoComentario(e.target.value)}
+              />
+              <button className='btn btn-primary' onClick={handleAñadirComentario}>
+                Añadir
+              </button>
+            </div>
           </ModalContent>
         </ModalOverlay>
       )}

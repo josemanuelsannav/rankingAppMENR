@@ -11,6 +11,7 @@ import duelosRoutes from './routes/duelosRoute.js';
 import historicoRoutes from './routes/historicoRoute.js';
 import usuarioRoutes from './routes/usuarioRoute.js';
 import rankingRoutes from './routes/rankingRoute.js';
+import comentarioRoutes from './routes/comentariosRoute.js';
 ///////////////////////////////////////////////////
 import mongoose from 'mongoose';
 
@@ -54,3 +55,4 @@ app.use('/api/duelos', duelosRoutes);
 app.use('/api/historico', historicoRoutes);
 app.use('/api/usuarios', usuarioRoutes);
 app.use('/api/rankings', rankingRoutes);
+app.use('/api/comentarios', comentarioRoutes);
