@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
-import '../../styles/Login/TopBar.css'
+import '../../styles/Login/Topbar.css'
 
 const TopBar = ({ profile , logOut}) => {
     const navigate = useNavigate();
