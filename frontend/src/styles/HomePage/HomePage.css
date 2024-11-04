@@ -41,3 +41,28 @@ body {
 
 
 
+
+.header {
+    text-align: center;
+    text-transform: uppercase;
+    padding: 32px;
+    background-color: #0a0a23;
+    color: #fff;
+    border-bottom: 4px solid #fdb347;
+  }
+.header h1{
+    font-size: 4em;
+}
+
+@media (max-width: 420px) {
+    .header {
+      width: 100vw;
+      overflow-x: hidden;
+      padding: 16px;
+      box-sizing: border-box; /* Incluir padding en el ancho del header */
+    }
+    .header h1{
+        font-size: 3.5em;
+    }
+  }
+  

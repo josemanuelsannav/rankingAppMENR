@@ -3,6 +3,7 @@ import { googleLogout, useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import api from "../services/api";
 import ListaRankings from '../components/LoginComponents/ListaRankings.jsx';
+import TopBar from '../components/LoginComponents/TopBar.jsx';
 import {
     MDBBtn,
     MDBContainer,
@@ -30,6 +31,13 @@ const Login = () => {
         },
         onError: (error) => console.log('Login Failed:', error)
     });
+
+    const logOut = () => {
+        googleLogout();
+        setProfile(null);
+        localStorage.removeItem('user'); // Eliminar del localStorage al cerrar sesión
+        setUser(null);
+    };
 
     useEffect(() => {
         // Verificar si hay un usuario guardado en localStorage
@@ -65,22 +73,13 @@ const Login = () => {
         }
     }, [user]);
 
-    const logOut = () => {
-        googleLogout();
-        setProfile(null);
-        localStorage.removeItem('user'); // Eliminar del localStorage al cerrar sesión
-        setUser(null);
-    };
+    
 
     return (
         <div>
-
+            <TopBar profile={profile} logOut={logOut} />
             {profile ? (
                 <div>
-                    <img src={profile.picture} alt={profile.name} />
-                    <h1>{profile.name}</h1>
-                    <h2>{profile.email}</h2>
-                    <button className='btn btn-danger' onClick={logOut}>Cerrar sesión</button>
                     <div>
                         <ListaRankings profile={profile} />
                     </div>
@@ -114,7 +113,7 @@ const Login = () => {
                                         Sign in with google
                                     </MDBBtn>
 
-                                    
+
                                 </MDBCardBody>
                             </MDBCard>
 

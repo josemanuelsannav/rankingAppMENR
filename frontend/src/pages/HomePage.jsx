@@ -33,9 +33,10 @@ const HomePage = ({rankingId}) => {
 
   return (
     <div>
-      <div className="title-container mb-3 mt-3">
+      <div className="header">
         <h1>Bienvenido jugador</h1>
       </div>
+      <br/>
       <PlayerForm rankingId={rankingId}/>
       
       <ListadoJugadoresHomePage jugadores={jugadores} />
