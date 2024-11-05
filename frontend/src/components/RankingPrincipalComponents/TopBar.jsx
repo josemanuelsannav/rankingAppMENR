@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-
+import "../../styles/Historico.css";
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 
@@ -121,58 +120,18 @@ const TopBar = ({ jugadores, historico }) => {
             </div>
 
             {isModalOpen && (
-                <ModalOverlay>
-                    <ModalContent>
-                        <CloseButton onClick={closeModal}>×</CloseButton>
+                <div id="historico-modal-overlay">
+                    <div id="historico-modal-content">
+                        <button id="hisotrico-close-button" onClick={closeModal}>×</button>
                         <h2>Evolución Ranking</h2>
                         {/* Contenido adicional del modal */}
-                        <div className="chart-container">
+                        <div id="historico-chart-container">
                             <Line data={data} options={options} />
                         </div>
-                    </ModalContent>
-                </ModalOverlay>
+                    </div>
+                </div>
             )}
         </div>
     );
 };
-
-// Estilos personalizados usando styled-components
-const ModalOverlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-`;
-
-const ModalContent = styled.div`
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  width: 90vw;
-  max-width: 1200px;
-  height: 80vh; /* Aumenta la altura del modal */
-  max-height: 100vh; /* Ajusta el tamaño máximo según tus necesidades */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const CloseButton = styled.button`
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: none;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-`;
-
 export default TopBar;

@@ -1,0 +1,66 @@
+#historico-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+#historico-modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90vw;
+  max-width: 1200px;
+  height: 80vh;
+  max-height: 100vh;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-x: auto; /* Permite el desplazamiento horizontal */
+  overflow-y: auto; /* Permite el desplazamiento vertical */
+}
+
+#historico-chart-container {
+    width: 800px; /* Ancho fijo */
+    height: 600px; /* Alto fijo */
+    overflow: auto;
+}
+
+#historico-close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    #historico-modal-content {
+      width: 100vw; /* Ancho completo de la pantalla */
+      height: 100vh; /* Alto completo de la pantalla */
+      overflow: auto; /* Permitir desplazamiento */
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  
+    #historico-chart-container {
+      width: 800px; /* Ancho fijo */
+      height: 600px; /* Alto fijo */
+      overflow: auto; /* Permitir desplazamiento */
+      white-space: nowrap; /* Evitar que el contenido se ajuste automáticamente */
+      margin-left: 400px; /* Ajusta este valor para cambiar la posición de partida */
+
+    }
+  }

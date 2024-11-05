@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import "../styles/HomePage/HomePage.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-
+import '../styles/HomePage/HomePage.css';
 ////////////////////////////////////////
 //Importamos los componentes
 ////////////////////////////////////////

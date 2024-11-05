@@ -19,6 +19,13 @@ const CardJuegoEquipo = ({ juego, juegosIndividuales, juegosPorEquipos, jugadore
   const [nuevoComentario, setNuevoComentario] = useState('');
   const [user, setUser] = useState(null);
 
+  const [permiso, setPermiso] = useState(false);
+
+  useEffect(() => {
+    // Leer el valor de permiso desde el local storage
+    const permisoLocal = localStorage.getItem('permiso');
+    setPermiso(permisoLocal === 'true');
+}, []);
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -194,7 +201,9 @@ const CardJuegoEquipo = ({ juego, juegosIndividuales, juegosPorEquipos, jugadore
               {juego.fecha && <li>{new Date(juego.fecha).toLocaleDateString()}</li>}
               <br />
               <button onClick={handleStats} className='btn btn-primary' style={{ marginRight: '10px' }}>Stats</button>
+              {permiso &&
               <button onClick={handleBorrar} className='btn btn-danger' style={{ marginRight: '10px' }}>Borrar</button>
+              }
               <button onClick={() => handleComentarios(juego._id)} className='btn btn-warning'>Comentarios</button>
 
             </ul>
