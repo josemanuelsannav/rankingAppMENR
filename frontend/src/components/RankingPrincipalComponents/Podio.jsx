@@ -5,6 +5,8 @@ import copaSegundoPuesto from '../../assets/number2.svg'
 import copaTercerPuesto from '../../assets/number3.svg'
 import confetti from 'canvas-confetti';
 import JugadorStatsModal from './JugadorStatsModal';
+
+
 const Podio = ({ jugadoresPodio, juegosEquipos, juegosIndividuales, duelos ,numJugadores}) => {
 
     const [modalVisible, setModalVisible] = useState(false);

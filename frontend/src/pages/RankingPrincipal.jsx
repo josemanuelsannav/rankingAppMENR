@@ -8,7 +8,6 @@ import TopBar from '../components/RankingPrincipalComponents/TopBar'
 import Podio from '../components/RankingPrincipalComponents/Podio'
 import ListadoJugadoresRankingPrincipal from '../components/RankingPrincipalComponents/ListadoJugadoresRankingPrincipal'
 ////////////////////////////////////////
-import Podio2 from '../components/Podio2'
 
 const RankingPrincipal = () => {
 
