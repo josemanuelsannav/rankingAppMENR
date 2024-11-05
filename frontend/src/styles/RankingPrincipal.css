@@ -309,6 +309,22 @@ h6 {
     flex-direction: column;
     justify-content: center;
 }
+
+#puntos-tercero {
+    max-width: 100%;
+    overflow-wrap: break-word;
+    text-align: center;
+    
+  }
+  
+  /* Media query para pantallas pequeñas */
+  @media (max-width: 400px) {
+    #puntos-tercero {
+      font-size: 0.8em; /* Reduce el tamaño de fuente en pantallas más estrechas */
+      overflow-wrap: break-word;
+    }
+  }
+
 .nombre-podio{
     -webkit-font-smoothing: antialiased;
     text-align: center;

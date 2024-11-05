@@ -8,7 +8,7 @@ import TopBar from '../components/RankingPrincipalComponents/TopBar'
 import Podio from '../components/RankingPrincipalComponents/Podio'
 import ListadoJugadoresRankingPrincipal from '../components/RankingPrincipalComponents/ListadoJugadoresRankingPrincipal'
 ////////////////////////////////////////
-
+import Podio2 from '../components/Podio2'
 
 const RankingPrincipal = () => {
 
@@ -125,8 +125,7 @@ const RankingPrincipal = () => {
 
       <TopBar jugadores={jugadores} historico={historico} />
       <br /><br /><br /><br /><br /><br /><br /><br />
-
-      <Podio jugadoresPodio={jugadores.slice(0, 3)} juegosEquipos={juegosEquipos} juegosIndividuales={juegosIndividuales} duelos={duelos} numJugadores={jugadores.length} />
+     <Podio jugadoresPodio={jugadores.slice(0, 3)} juegosEquipos={juegosEquipos} juegosIndividuales={juegosIndividuales} duelos={duelos} numJugadores={jugadores.length} />
       <ListadoJugadoresRankingPrincipal jugadores={jugadores.slice(3)} juegosEquipos={juegosEquipos} juegosIndividuales={juegosIndividuales} duelos={duelos} />
       <br />
       <br />
