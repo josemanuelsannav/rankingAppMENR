@@ -121,7 +121,7 @@ const Duelo = () => {
                 <h1>Nuevo Duelo</h1>
 
                 <span className="select-container-juego-normal">
-                    <label htmlFor="nombre-juego">Nombre del Duelo:</label>
+                    <label htmlFor="nombre-juego" className='texto-input'>Nombre del Duelo :</label>
                     <select id="miSelectId-juego-normal-duelo" name="miSelect-juego-normal-duelo" required>
                         {Array.isArray(juegosCategorias) && juegosCategorias.map((juegoCategoria) => (
                             <option key={juegoCategoria._id} value={juegoCategoria._id}>
@@ -132,7 +132,7 @@ const Duelo = () => {
                 </span>
                 <br />
                 <span className="select-container-juego-normal">
-                    <label htmlFor="nombre-juego">Ganador:</label>
+                    <label htmlFor="nombre-juego"  className='texto-input'>Ganador :</label>
                     <select id="miSelectId-jugadores-ganador" name="miSelectId-jugadores-ganador" required>
                         {Array.isArray(jugadores) && jugadores.map((jugador) => (
                             <option key={jugador._id} value={jugador._id}>
@@ -143,7 +143,7 @@ const Duelo = () => {
                 </span>
                 <br />
                 <span className="select-container-juego-normal">
-                    <label htmlFor="nombre-juego">Perdedor:</label>
+                    <label htmlFor="nombre-juego"  className='texto-input'>Perdedor :</label>
                     <select id="miSelectId-jugadores-perdedor" name="miSelectId-jugadores-perdedor" required>
                         {Array.isArray(jugadores) && jugadores.map((jugador) => (
                             <option key={jugador._id} value={jugador._id}>
@@ -154,7 +154,7 @@ const Duelo = () => {
                 </span>
                 <br />
                 <span className="input-container-puntos">
-                    <label htmlFor="puntos">Apuesta:</label>
+                    <label htmlFor="puntos"  className='texto-input'>Apuesta :</label>
                     <input type="number" id="puntos" name="puntos" required />
                 </span>
                 <br />

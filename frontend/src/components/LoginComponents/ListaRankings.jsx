@@ -241,7 +241,7 @@ const ListaRankings = ({ profile }) => {
                             />
                         </label>
                         <br />
-                        <div>
+                        <div className='separator'>
                             <h3>Invitar Miembros</h3>
                             <input
                                 type="email"
@@ -279,8 +279,8 @@ const ListaRankings = ({ profile }) => {
                                 .map((miembro, index) => (
                                     <div key={miembro.email} style={{ display: 'flex', alignItems: 'center' }}>
                                         <span>{miembro.email}</span>
-                                        <button onClick={() => handleRemoveMember(miembro.email)} style={{ marginLeft: '10px' }}>Eliminar</button>
-                                        <span>Permisos :</span>
+                                        <button onClick={() => handleRemoveMember(miembro.email)} style={{ marginLeft: '10px',marginRight:'10px' }}>Eliminar</button>
+                                        <span >Permisos :</span>
                                         <input
                                             type="checkbox"
                                             checked={miembro.permiso}

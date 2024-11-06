@@ -76,17 +76,19 @@ const ListaJugadores = ({ jugadores, setVisibleJugadores }) => {
       <br />
       <ul>
         {visibleJugadores.map((jugador, index) => (
-          <li key={jugador._id}>
-            {index + 1}.{jugador.nombre}
-            <button onClick={() => removeJugador(jugador)} className="btn-icon">
-              <img src={eliminarIcono} alt="Eliminar" style={{ width: '20px', height: '20px' }} />
-            </button>
-            <button onClick={() => moveJugadorUp(index)} type="button" className="btn-icon">
-              <img src={flechaArribaIcono} alt="Subir" style={{ width: '20px', height: '20px' }} />
-            </button>
-            <button onClick={() => moveJugadorDown(index)} type="button" className="btn-icon">
-              <img src={flechaAbajoIcono} alt="Bajar" style={{ width: '20px', height: '20px' }} />
-            </button>
+          <li key={jugador._id} >
+            {index + 1}. {jugador.nombre}
+            <div className="button-container">
+              <button onClick={() => removeJugador(jugador)} className="btn-icon">
+                <img src={eliminarIcono} alt="Eliminar" style={{ width: '20px', height: '20px' }} />
+              </button>
+              <button onClick={() => moveJugadorUp(index)} type="button" className="btn-icon">
+                <img src={flechaArribaIcono} alt="Subir" style={{ width: '20px', height: '20px' }} />
+              </button>
+              <button onClick={() => moveJugadorDown(index)} type="button" className="btn-icon">
+                <img src={flechaAbajoIcono} alt="Bajar" style={{ width: '20px', height: '20px' }} />
+              </button>
+            </div>
           </li>
         ))}
       </ul>

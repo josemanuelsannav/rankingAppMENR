@@ -21,15 +21,17 @@ body{
   align-items: center;
 }
 
-.jugadores-container ul {
+.jugadores-container ul ,.modal-content ul  ,.integrantes-equipo ul{
   list-style-type: none;
   padding: 0;
 }
 
-.jugadores-container li {
+.jugadores-container li , .modal-content li,.integrantes-equipo li {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
+  justify-content: space-between;
+  align-items: center;
 }
 
 
@@ -89,3 +91,6 @@ body{
 }
 
 
+.texto-input{
+  padding-right: 10px;
+}

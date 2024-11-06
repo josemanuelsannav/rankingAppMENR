@@ -7,3 +7,15 @@
         width: 90%; /* Ancho para dispositivos móviles */
     }
 }
+.separator {
+    border-top: 2px solid #000000; /* Cambia el color y el grosor según sea necesario */
+    padding-top: 10px; /* Añade un poco de espacio entre la línea y el contenido */
+}
+
+.close {
+    font-size: 32px; /* Aumenta el tamaño de la "X" */
+    position: absolute; /* Posiciona el elemento de forma absoluta */
+    top: 10px; /* Ajusta la distancia desde la parte superior */
+    right: 10px; /* Ajusta la distancia desde la parte derecha */
+    cursor: pointer; /* Cambia el cursor al pasar sobre la "X" */
+}

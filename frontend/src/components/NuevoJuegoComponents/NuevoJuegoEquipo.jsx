@@ -207,7 +207,7 @@ const NuevoJuegoEquipo = () => {
                     <form id="game-form" onSubmit={handleGuardarJuego}>
                         <h1>Por equipos</h1>
 
-                        <label htmlFor="nombre-juego">Nombre del Juego:</label>
+                        <label htmlFor="nombre-juego">Nombre del Juego :</label>
                         <span className="select-container-juego-normal-2">
                             <select id="miSelectId-juego-normal-2" name="miSelect-juego-normal-2" required>
                                 {Array.isArray(juegosCategorias) && juegosCategorias.map((juegoCategoria) => (
@@ -273,8 +273,8 @@ const NuevoJuegoEquipo = () => {
                                 />
                             </div>
                             <br />
-                            <div>
-                                <label>Integrantes:</label>
+                            <div className='integrantes-equipo'>
+                                <label>Integrantes :</label>
                                 <ul>
                                     {equipoIntegrantes.map(jugador => (
                                         <li key={jugador._id}>

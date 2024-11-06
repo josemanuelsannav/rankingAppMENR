@@ -45,8 +45,8 @@ const CrearCategoriaJuego = () => {
         <div>
             <div className="container">   
                 <form id="new-game" onSubmit={handleSubmit}>
-                <h1>Crear Juego</h1>
-                    <label htmlFor="nombre-juego-nuevo">Nombre del nuevo juego:</label>
+                <h1>Crear Categoria</h1>
+                    <label htmlFor="nombre-juego-nuevo">Nombre del nuevo juego :</label>
                     <br />
                     <input onChange={handleInputChange} type="text" id="nombre-juego-nuevo" name="nombre" required />
                     <br />

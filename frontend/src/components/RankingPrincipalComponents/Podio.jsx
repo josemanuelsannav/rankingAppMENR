@@ -150,6 +150,7 @@ const Podio = ({ jugadoresPodio, juegosEquipos, juegosIndividuales, duelos ,numJ
                                     {jugadoresPodio[1] ? jugadoresPodio[1].nombre : "No hay segundo lugar"}
                                 </h6>
                             </div>
+                            
                             <h6 className="MuiTypography-root MuiTypography-subtitle2" id="puntos-segundo">
                                 {jugadoresPodio[1] ? jugadoresPodio[1].puntuacion + " pts.   Wr: " + calcularWR(jugadoresPodio[1]) + "%"  + " Lr: " + calcularLR(jugadoresPodio[1]) + "%" : 0} 
                             </h6>

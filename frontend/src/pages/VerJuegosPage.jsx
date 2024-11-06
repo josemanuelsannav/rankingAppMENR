@@ -164,6 +164,7 @@ const VerJuegosPage = () => {
           </option>
         ))}
       </select>
+      
       <button onClick={handleBuscar}>Buscar</button>
       <select 
         style={{marginRight:'10px',marginLeft:'10px'}}
