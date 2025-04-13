@@ -18,7 +18,7 @@ const NuevoJuegoEquipo = () => {
     const [currentEquipoIndex, setCurrentEquipoIndex] = useState(null);
     const navigate = useNavigate();
     const [showInvitadosModal, setShowInvitadosModal] = useState(false);
-    const [nombreInvitado, setNombreInvitado] = useState(''); 
+    const [nombreInvitado, setNombreInvitado] = useState('');
 
     const fetchJuegosCategorias = async (id) => {
         try {
@@ -62,21 +62,24 @@ const NuevoJuegoEquipo = () => {
             if (response.status === 201) {
                 alert('Juego guardado con éxito');
                 // Recorrer cada equipo y dentro de cada equipo recorrer los integrantes para actualizar su puntuación
-                equipos.forEach(async (equipo, equipoIndex) => {
-                    equipo.integrantes.forEach(async (integrante, integranteIndex) => {
-                        try {
-                            const putResponse = await api.put(`/jugadores/actualizarPuntuacion/${integrante._id}`, {
-                                puntos: equipo.puntos,
-                            });
+                // Crear un array de promesas para las solicitudes PUT
+                const updatePromises = equipos.flatMap((equipo) =>
+                    equipo.integrantes.map((integrante) =>
+                        api.put(`/jugadores/actualizarPuntuacion/${integrante._id}`, {
+                            puntos: equipo.puntos,
+                        }).then((putResponse) => {
                             if (putResponse.status === 200) {
                                 console.log(`Puntuación actualizada para el jugador ${integrante.nombre}`);
                             }
-                        } catch (error) {
+                        }).catch((error) => {
                             console.error(`Error al actualizar la puntuación del jugador ${integrante.nombre}:`, error);
-                        }
-                    });
-                });
-                await new Promise(resolve => setTimeout(resolve, 500)); //medio segundo de espera para que se actualicen bien los datos
+                        })
+                    )
+                );
+
+                // Esperar a que todas las solicitudes PUT se completen
+                await Promise.all(updatePromises);
+                await new Promise(resolve => setTimeout(resolve, 1000)); //un segundo de espera para que se actualicen bien los datos
 
                 const jugadoresResponse = await api.get(`/jugadores/todosLosJugadores/${rankingId}`);
                 const jugadoresHistorico = jugadoresResponse.data.data;
@@ -192,7 +195,7 @@ const NuevoJuegoEquipo = () => {
         const invitado = {
             nombre: "Invitado " + nombreInvitado,
             _id: new mongoose.Types.ObjectId() // Generar un ObjectId válido
-          };
+        };
         setEquipoIntegrantes([...equipoIntegrantes, invitado]);
         setShowInvitadosModal(false);
         setNombreInvitado('');

@@ -27,18 +27,23 @@ const TopBar = ({ jugadores, historico }) => {
 
     const nombres_jugadores = jugadores.map(jugador => jugador.nombre);
 
-    const dias = historico.map(historico => {
-        const fecha = new Date(historico.fecha);
-        const fechaFormateada = fecha.toISOString().split('T')[0]; // Obtiene solo el año, mes y día
-        return `${fechaFormateada} ${historico.nombre}`;
-    });
+    const dias = historico
+        .filter(historico => !historico.nombre.startsWith("Apuesta")) // Filtrar los que no empiezan con "Apuesta"
+        .map(historico => {
+            const fecha = new Date(historico.fecha);
+            const fechaFormateada = fecha.toISOString().split('T')[0]; // Obtiene solo el año, mes y día
+            return `${fechaFormateada} ${historico.nombre}`;
+        });
 
     const datos = [];
 
-    for (const nombre of nombres_jugadores) {
+       for (const nombre of nombres_jugadores) {
         const posiciones = [];
-
-        for (const juego of historico) {
+    
+        // Filtrar el histórico para excluir los juegos que comienzan con "Apuesta"
+        const historicoFiltrado = historico.filter(juego => !juego.nombre.startsWith("Apuesta"));
+    
+        for (const juego of historicoFiltrado) {
             // Buscar el índice del jugador por nombre en la lista de jugadores del día
             juego.jugadores.sort((a, b) => b.puntuacion - a.puntuacion);
             let indice = juego.jugadores.findIndex(jugador => jugador.nombre === nombre);
@@ -51,9 +56,8 @@ const TopBar = ({ jugadores, historico }) => {
                 indice = indice + 1;
                 posiciones.push(indice);
             }
-
         }
-
+    
         datos.push({
             nombre: nombre,
             posiciones: posiciones
@@ -63,15 +67,21 @@ const TopBar = ({ jugadores, historico }) => {
     const coloresPredefinidos = [
         '#FF0000', // Rojo
         '#00FF00', // Verde
-        '#0000FF', // Azul
+        '#0000FF', // Azul oscuro
         '#FFD700', // Amarillo
         '#FF00FF', // Magenta
         '#00FFFF', // Cian
         '#590466', // purpura
         '#008080', // Verde azulado
-        '#0F84EB',  // azul
+        '#65d6a9',  // verde raro
         '#FF7F50', // naranja
-        '#0F84EB'  // azul
+        '#0F84EB',  // azul
+        '#b1b448', // amarillo raro
+        '#a19f9f', // gris
+        '#000000', //negro
+        '#ca984d', // marron
+        '#b34dca', // morao
+        
     ];
 
     const data = {

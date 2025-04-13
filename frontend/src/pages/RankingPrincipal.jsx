@@ -5,6 +5,7 @@ import api from '../services/api';
 //Importamos los componentes
 ////////////////////////////////////////
 import TopBar from '../components/RankingPrincipalComponents/TopBar'
+import FiltradoRankingPartidas from '../components/RankingPrincipalComponents/FiltradoRankingPartidas'
 import Podio from '../components/RankingPrincipalComponents/Podio'
 import ListadoJugadoresRankingPrincipal from '../components/RankingPrincipalComponents/ListadoJugadoresRankingPrincipal'
 ////////////////////////////////////////
@@ -106,7 +107,7 @@ const RankingPrincipal = () => {
     }
   };
 
- 
+
 
   useEffect(() => {
     const storedRankingId = localStorage.getItem('rankingId');
@@ -118,13 +119,17 @@ const RankingPrincipal = () => {
     fetchHistorico(storedRankingId);
   }, []);
 
-  
+ 
   return (
     <div>
 
       <TopBar jugadores={jugadores} historico={historico} />
-      <br /><br /><br /><br /><br /><br /><br /><br />
-     <Podio jugadoresPodio={jugadores.slice(0, 3)} juegosEquipos={juegosEquipos} juegosIndividuales={juegosIndividuales} duelos={duelos} numJugadores={jugadores.length} />
+      <br />
+      <FiltradoRankingPartidas  historico={historico}  />
+
+      <br /><br /><br /><br /><br /><br /><br />
+
+      <Podio jugadoresPodio={jugadores.slice(0, 3)} juegosEquipos={juegosEquipos} juegosIndividuales={juegosIndividuales} duelos={duelos} numJugadores={jugadores.length} />
       <ListadoJugadoresRankingPrincipal jugadores={jugadores.slice(3)} juegosEquipos={juegosEquipos} juegosIndividuales={juegosIndividuales} duelos={duelos} />
       <br />
       <br />

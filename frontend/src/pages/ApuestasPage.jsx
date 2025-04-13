@@ -3,7 +3,7 @@ import api from '../services/api';
 import TopBar from '../components/VerJuegosComponents/TopBar'
 import '../styles/Apuesta.css'
 import addIcon from '../assets/anadir.png';
-import botonEliminar from '../assets/boton-eliminar.png';
+import eliminarIcono from '../assets/boton-eliminar.png'; // Ajusta la ruta según sea necesario
 import { useNavigate } from 'react-router-dom';
 
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
@@ -21,6 +21,7 @@ const ApuestasPage = () => {
   const [juegosCategorias, setJuegosCategorias] = useState([]);
   const [juegosIndividuales, setJuegosIndividuales] = useState([]);
   const [juegosPorEquipos, setJuegosPorEquipos] = useState([]);
+  const [duelos, setDuelos] = useState([]);
 
   const [juegoApuesta, setJuegoApuesta] = useState(null);
 
@@ -95,6 +96,15 @@ const ApuestasPage = () => {
     }
   };
 
+  const fetchDuelos = async (id) => {
+    try {
+      const { data } = (await api.get(`/duelos/todosLosDuelos/${id}`)).data;
+      setDuelos(data);
+    } catch (error) {
+      console.log("Error al obtener los juegos duelos:  ", error);
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -104,6 +114,7 @@ const ApuestasPage = () => {
         await fetchJuegosCategorias(rankingId);
         await fetchJuegosIndividuales(rankingId);
         await fetchJuegosPorEquipos(rankingId);
+        await fetchDuelos(rankingId);
         setDataFetched(true);
       } catch (err) {
         //setError(err);
@@ -146,6 +157,7 @@ const ApuestasPage = () => {
     let partidasTotales = 0;
     let partidasGanadas = 0;
     let partidas = [...juegosIndividuales.filter(juego => juego.nombre === nombreJuego), ...juegosPorEquipos.filter(juego => juego.nombre === nombreJuego)];
+    let listaDuelos = [...duelos.filter(duelo => duelo.nombre === nombreJuego)];
     let cuota = 0;
     if (participantes.length === 0 || contrincantes.length === 0) {
 
@@ -190,6 +202,28 @@ const ApuestasPage = () => {
         }
       }
     }
+
+    for (const duelo of listaDuelos) {
+      for (const participante of participantes) {
+        if (participante.nombre === duelo.ganadorNombre) {
+          for (const contrincante of contrincantes) {
+            if (contrincante.nombre === duelo.perdedorNombre) {
+              partidasTotales++;
+              partidasGanadas++;
+            }
+          }
+        }
+        if (participante.nombre === duelo.perdedorNombre) {
+          for (const contrincante of contrincantes) {
+            if (contrincante.nombre === duelo.ganadorNombre) {
+              partidasTotales++;
+            }
+          }
+        }
+
+      }
+
+    }
     //Calcular cuota
     let cuotaMIN = 1.1;
     let cuotaMAX = 3;
@@ -225,7 +259,7 @@ const ApuestasPage = () => {
   const handleInvertirJugadores = () => {
     setGanadores(perdedores);
     setPerdedores(ganadores);
-    
+
     setCuotaGanador(cuotaPerdedor);
     setCuotaPerdedor(cuotaGanador);
 
@@ -266,26 +300,45 @@ const ApuestasPage = () => {
       if (response.status === 201) {
         alert('Apuesta guardado con éxito');
         // Recorrer la lista de jugadores actualizados y hacer una solicitud PUT para cada uno
-        listaApuestas.forEach(async (apuestaPersona, index) => {
-          try {
-            let putResponse = null;
-            console.log("Apuesta persona : ", apuestaPersona);
-            if (apuestaPersona.resultado === "ganador") {
-              putResponse = await api.put(`/jugadores/actualizarPuntuacion/${apuestaPersona.jugador._id}`, {
-                puntos: ((parseFloat(apuestaPersona.apuesta) * parseFloat(cuotaGanador)) - parseFloat(apuestaPersona.apuesta)),
-              });
-            } else {
-              putResponse = await api.put(`/jugadores/actualizarPuntuacion/${apuestaPersona.jugador._id}`, {
-                puntos: (parseFloat(apuestaPersona.apuesta) * (-1)),
-              });
-            }
-            if (putResponse.status === 200) {
-              console.log(`Puntuación actualizada para el jugador ${apuestaPersona.jugador.nombre}`);
-            }
-          } catch (error) {
-            console.error(`Error al actualizar la puntuación del jugador ${apuestaPersona.jugador.nombre}:`, error);
-          }
+        // Crear un array de promesas para las solicitudes PUT
+        const updatePromises = listaApuestas.map((apuestaPersona) => {
+          const puntos =
+            apuestaPersona.resultado === "ganador"
+              ? (parseFloat(apuestaPersona.apuesta) * parseFloat(cuotaGanador)) - parseFloat(apuestaPersona.apuesta)
+              : parseFloat(apuestaPersona.apuesta) * -1;
+
+          return api.put(`/jugadores/actualizarPuntuacion/${apuestaPersona.jugador._id}`, { puntos })
+            .then((putResponse) => {
+              if (putResponse.status === 200) {
+                console.log(`Puntuación actualizada para el jugador ${apuestaPersona.jugador.nombre}`);
+              }
+            })
+            .catch((error) => {
+              console.error(`Error al actualizar la puntuación del jugador ${apuestaPersona.jugador.nombre}:`, error);
+            });
         });
+
+        // Esperar a que todas las solicitudes PUT se completen
+        await Promise.all(updatePromises);
+        await new Promise(resolve => setTimeout(resolve, 1000)); //un segundo de espera para que se actualicen bien los datos
+
+        const jugadoresResponse = await api.get(`/jugadores/todosLosJugadores/${rankingId}`);
+        const jugadoresHistorico = jugadoresResponse.data.data;
+        console.log('Jugadores historico:', jugadoresHistorico); // Añade este log para verificar los datos
+
+        const historicoData = {
+          nombre: "Apuesta: "+ juegoApuesta,
+          jugadores: jugadoresHistorico,
+          fecha: new Date(),
+          idJuego: response.data._id,
+          rankingId: rankingId
+        };
+        const responseHistorico = await api.post('/historico/nuevoHistorico', historicoData);
+        if (responseHistorico.status === 201) {
+          console.log('Historico guardado con éxito');
+        } else {
+          console.log('Error al guardar el historico');
+        }
 
         navigate("/RankingPrincipal"); // Redirige a la misma ruta para forzar una actualización
       }
@@ -297,6 +350,26 @@ const ApuestasPage = () => {
     }
   };
 
+  const handleEliminarGanador = (ganador) => {
+
+    //Se quita el ganador de la lista de ganadores y se añade a la lista de jugadores
+    setGanadores(ganadores.filter(g => g._id !== ganador._id));
+    setJugadores([...jugadores, ganador].sort((a, b) => a.nombre.localeCompare(b.nombre))); //se ordena la lista de jugadores por nombre
+
+  }
+
+  const handleEliminarPerdedor = (perdedor) => {
+    //Se quita el perdedor de la lista de perdedores y se añade a la lista de jugadores
+    setPerdedores(perdedores.filter(p => p._id !== perdedor._id));
+    setJugadores([...jugadores, perdedor].sort((a, b) => a.nombre.localeCompare(b.nombre))); //se ordena la lista de jugadores por nombre
+  }
+
+  const handleEliminarApuestaPersona = (apuesta) => {
+    //Se quita la apuesta de la lista de apuestas y se añade a la lista de jugadores
+    setListaApuestas(listaApuestas.filter(a => a.jugador._id !== apuesta.jugador._id));
+    setJugadores([...jugadores, apuesta.jugador].sort((a, b) => a.nombre.localeCompare(b.nombre))); //se ordena la lista de jugadores por nombre
+
+  }
 
   return (
     <div>
@@ -337,8 +410,11 @@ const ApuestasPage = () => {
                   <h3>Ganadores - Cuota : {cuotaGanador}</h3>
                   <ul>
                     {ganadores.map(ganador => (
-                      <li key={ganador._id}>
-                        {ganador.nombre}
+                      <li key={ganador._id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <span>{ganador.nombre}</span>
+                        <button className="btn-icon" type="button" onClick={() => handleEliminarGanador(ganador)} style={{ marginRight: '50px' }}>
+                          <img src={eliminarIcono} alt="Eliminar" style={{ width: '20px', height: '20px' }} />
+                        </button>
                       </li>
                     ))}
                   </ul>
@@ -351,8 +427,11 @@ const ApuestasPage = () => {
                   <h3>Perdedores - Cuota : {cuotaPerdedor} </h3>
                   <ul>
                     {perdedores.map(perdedor => (
-                      <li key={perdedor._id}>
-                        {perdedor.nombre}
+                      <li key={perdedor._id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <span>{perdedor.nombre}</span>
+                        <button className="btn-icon" type="button" onClick={() => handleEliminarPerdedor(perdedor)} style={{ marginRight: '50px' }}>
+                          <img src={eliminarIcono} alt="Eliminar" style={{ width: '20px', height: '20px' }} />
+                        </button>
                       </li>
                     ))}
                   </ul>
@@ -372,6 +451,9 @@ const ApuestasPage = () => {
                 {listaApuestas.map((apuesta, index) => (
                   <li key={index}>
                     {apuesta.jugador.nombre} - {apuesta.apuesta} - {apuesta.resultado}
+                    <button className="btn-icon" type="button" onClick={() => handleEliminarApuestaPersona(apuesta)} style={{ marginRight: '50px' }}>
+                      <img src={eliminarIcono} alt="Eliminar" style={{ width: '20px', height: '20px' }} />
+                    </button>
                   </li>
                 ))}
               </ul>
@@ -427,15 +509,15 @@ const ApuestasPage = () => {
           <div className="modal-content">
             <h2>Nueva apuesta jugador</h2>
 
-            <form  style={{ width: '100%' }}>
+            <form style={{ width: '100%' }}>
               <label htmlFor="jugador" style={{ width: '100%' }}>Apostador:</label>
-              <select 
-              id="jugador" 
-              name="jugador" 
-              value={jugadorApuesta} 
-              onChange={(e)=>setJugadorApuesta(e.target.value)}
-              required 
-              style={{ width: '100%' }}>
+              <select
+                id="jugador"
+                name="jugador"
+                value={jugadorApuesta}
+                onChange={(e) => setJugadorApuesta(e.target.value)}
+                required
+                style={{ width: '100%' }}>
                 {Array.isArray(jugadores) && jugadores.map((jugador) => (
                   <option key={jugador._id} value={jugador._id}>
                     {jugador.nombre}
@@ -454,13 +536,13 @@ const ApuestasPage = () => {
               />
               <br />
               <label htmlFor="resultado" style={{ width: '100%' }}>Resultado:</label>
-              <select 
-              id="resultado" 
-              name="resultado" 
-              value={resultadoApuesta} 
-              onChange={(e) => setResultadoApuesta(e.target.value)}
-              required 
-              style={{ width: '100%' }}
+              <select
+                id="resultado"
+                name="resultado"
+                value={resultadoApuesta}
+                onChange={(e) => setResultadoApuesta(e.target.value)}
+                required
+                style={{ width: '100%' }}
               >
                 <option value="ganador">Ganador</option>
                 <option value="perdedor">Perdedor</option>

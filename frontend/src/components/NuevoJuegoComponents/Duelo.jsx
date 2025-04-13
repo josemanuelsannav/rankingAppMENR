@@ -88,7 +88,8 @@ const Duelo = () => {
                 } catch (error) {
                     console.error(`Error al actualizar la puntuación de los jugadores:`, error);
                 }
-                await new Promise(resolve => setTimeout(resolve, 500)); //medio segundo de espera para que se actualicen bien los datos
+                await new Promise(resolve => setTimeout(resolve, 1000)); //medio segundo de espera para que se actualicen bien los datos
+              
                 const jugadoresResponse = await api.get(`/jugadores/todosLosJugadores/${rankingId}`);
                 const jugadoresHistorico = jugadoresResponse.data.data;
                 console.log('Jugadores historico:', jugadoresHistorico); // Añade este log para verificar los datos

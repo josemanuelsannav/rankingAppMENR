@@ -58,7 +58,7 @@ const NuevoJuegoIndividual = () => {
         const juegoData = {
             nombre: nombreJuego,
             jugadores: jugadoresActualizados,
-            rankingId : rankingId
+            rankingId: rankingId
         };
 
 
@@ -66,21 +66,22 @@ const NuevoJuegoIndividual = () => {
             const response = await api.post('/juegosIndividuales/nuevoJuegoIndividual', juegoData);
             if (response.status === 201) {
                 alert('Juego guardado con éxito');
-                // Recorrer la lista de jugadores actualizados y hacer una solicitud PUT para cada uno
-                visibleJugadores.forEach(async (jugador, index) => {
-                    try {
-                            
-                        const putResponse = await api.put(`/jugadores/actualizarPuntuacion/${jugador._id}`, {
-                            puntos: visibleJugadores.length - index - 1,
-                        });
+                // Crear un array de promesas para las solicitudes PUT
+                const updatePromises = visibleJugadores.map((jugador, index) => {
+                    return api.put(`/jugadores/actualizarPuntuacion/${jugador._id}`, {
+                        puntos: visibleJugadores.length - index - 1,
+                    }).then((putResponse) => {
                         if (putResponse.status === 200) {
                             console.log(`Puntuación actualizada para el jugador ${jugador.nombre}`);
                         }
-                    } catch (error) {
+                    }).catch((error) => {
                         console.error(`Error al actualizar la puntuación del jugador ${jugador.nombre}:`, error);
-                    }
+                    });
                 });
-                await new Promise(resolve => setTimeout(resolve, 500)); //medio segundo de espera para que se actualicen bien los datos
+
+                // Esperar a que todas las solicitudes PUT se completen
+                await Promise.all(updatePromises);
+                await new Promise(resolve => setTimeout(resolve, 1000)); //un segundo de espera para que se actualicen bien los datos
 
                 const jugadoresResponse = await api.get(`/jugadores/todosLosJugadores/${rankingId}`);
                 const jugadoresHistorico = jugadoresResponse.data.data;
@@ -101,7 +102,7 @@ const NuevoJuegoIndividual = () => {
                 }
                 navigate("/RankingPrincipal"); // Redirige a la misma ruta para forzar una actualización
             }
-            
+
 
 
         } catch (error) {
@@ -125,7 +126,7 @@ const NuevoJuegoIndividual = () => {
                     </select>
                 </span>
                 <br />
-                <button type="submit"  className="btn btn-success">Guardar Juego</button>
+                <button type="submit" className="btn btn-success">Guardar Juego</button>
 
                 <div className="container">
 
