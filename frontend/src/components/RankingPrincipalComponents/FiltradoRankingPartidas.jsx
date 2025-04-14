@@ -5,40 +5,40 @@ const FiltradoRankingPartidas = ({ historico }) => {
 
     const historicoOrdenado = historico.sort((a, b) => {
         return new Date(a.fecha) - new Date(b.fecha);
-    });    
+    });
 
     const [juegoSeleccionadoDesde, setJuegoSeleccionadoDesde] = useState('');
     const [juegoSeleccionadoHasta, setJuegoSeleccionadoHasta] = useState('');
 
     const [showJuegosFiltradosModal, setShowJuegosFiltradosModal] = useState(false);
     const [jugadoresFiltrados, setJugadoresFiltrados] = useState([]);
-   
+
 
     const handleFiltrar = () => {
-        
+
         const juegoDesde = historicoOrdenado.find((juego) => juego._id === juegoSeleccionadoDesde);
         const juegoHasta = historicoOrdenado.find((juego) => juego._id === juegoSeleccionadoHasta);
-        
+
         const jugadoresResultado = juegoHasta.jugadores.map((jugador) => ({
             ...jugador,
-            puntuacion: jugador.puntuacion, 
+            puntuacion: jugador.puntuacion,
         }));
 
-       
-        for(let jugadorResultado of jugadoresResultado){
-            for(const jugadorDesde of juegoDesde.jugadores){
-                if(jugadorDesde._id === jugadorResultado._id){
+
+        for (let jugadorResultado of jugadoresResultado) {
+            for (const jugadorDesde of juegoDesde.jugadores) {
+                if (jugadorDesde._id === jugadorResultado._id) {
                     jugadorResultado.puntuacion = jugadorResultado.puntuacion - jugadorDesde.puntuacion;
                 }
             }
         }
-      
+
         jugadoresResultado.sort((a, b) => b.puntuacion - a.puntuacion);
         setJugadoresFiltrados(jugadoresResultado);
         setShowJuegosFiltradosModal(true);
     }
 
-   
+
 
     return (
         <div>
@@ -51,7 +51,13 @@ const FiltradoRankingPartidas = ({ historico }) => {
                 <option value="">Todos los juegos</option>
                 {historicoOrdenado.map((historico) => (
                     <option key={historico._id} value={historico._id}>
-                        {historico.nombre} - {historico.fecha}
+                        {historico.nombre} - {new Date(historico.fecha).toLocaleString('es-ES', {
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric',
+                        })}
                     </option>
                 ))}
             </select>

@@ -371,6 +371,8 @@ const ApuestasPage = () => {
 
   }
 
+ 
+
   return (
     <div>
       <TopBar />
@@ -458,8 +460,10 @@ const ApuestasPage = () => {
                 ))}
               </ul>
               <Button type="button" onClick={() => setShowApuestaPersona(true)} >
-                Añadir apuesta
+                Añadir apuesta persona
               </Button>
+              <br />
+              -------------------------------
               <br />
               <Button type="button" onClick={() => handleCrearApuesta()}>
                 Crear </Button>

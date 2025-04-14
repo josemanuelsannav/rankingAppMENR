@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import JuegoIndividual from "../models/juegoIndividual.js";
 import JuegoEquipo from "../models/juegoEquipo.js";
 import Duelo from "../models/duelo.js";
+import Apuesta from "../models/apuesta.js";
 import { parse } from "dotenv";
 
 export const getHistoricos = async (req, res) => {
@@ -53,28 +54,59 @@ export const eliminarHistorico = async (req, res) => {
 
     if (!juegoIndividual && !juegoEquipo) {
         const duelo = await Duelo.findById(idJuego);
-        if (!duelo) {
-            return res.status(404).send(`No existe un duelo con el id: ${idJuego}`);
-        }
-        const index = historicos.findIndex(historico => historico.idJuego === idJuego);
-        let cont = 0;
-        for (const historicoAux of historicos) {
-            if (cont >= index) {
-                for (const jugadorHistorico of historicoAux.jugadores) {
-                    if (jugadorHistorico.nombre === duelo.ganadorNombre) {
-                        jugadorHistorico.puntuacion = parseInt(jugadorHistorico.puntuacion) + parseInt(duelo.apuesta);
-                    }else if (jugadorHistorico.nombre === duelo.perdedorNombre) {
-                        jugadorHistorico.puntuacion = parseInt(jugadorHistorico.puntuacion) - parseInt(duelo.apuesta);
+        if (!duelo) {//si no es un duelo puede ser una apuesta
+            const apuesta = await Apuesta.findById(idJuego);
+            if (!apuesta) {//si tampoco es apuesta algo falla
+                return res.status(404).send(`No existe un duelo ni una apuesta con el id: ${idJuego}`);
+            } else {//es una apuesta
+                const index = historicos.findIndex(historico => historico.idJuego === idJuego);
+                let cont = 0;
+                for (const historicoAux of historicos) {
+                    if (cont >= index) {
+                        for (const apuestaPersona of apuesta.apuestasPersona) {
+                            if (apuestaPersona.resultado === "ganador") {
+                                for (const jugadorHistorico of historicoAux.jugadores) {
+                                    if (jugadorHistorico.nombre === apuestaPersona.jugador.nombre) {
+                                        jugadorHistorico.puntuacion = parseFloat(jugadorHistorico.puntuacion) - (parseFloat(apuestaPersona.apuesta) * parseFloat(apuesta.cuotaGanador)) + parseFloat(apuestaPersona.apuesta);
+                                    }
+                                }
+                            } else {
+                                for (const jugadorHistorico of historicoAux.jugadores) {
+                                    if (jugadorHistorico.nombre === apuestaPersona.jugador.nombre) {
+                                        jugadorHistorico.puntuacion = parseFloat(jugadorHistorico.puntuacion) + parseFloat(apuestaPersona.apuesta);
+                                    }
+                                }
+                            }
+
+                        }
+                        await Historico.findByIdAndUpdate(historicoAux._id, historicoAux);
                     }
+                    cont++;
                 }
-                await Historico.findByIdAndUpdate(historicoAux._id, historicoAux);
+
             }
-            cont++;
+        } else {//si es un duelo
+            const index = historicos.findIndex(historico => historico.idJuego === idJuego);
+            let cont = 0;
+            for (const historicoAux of historicos) {
+                if (cont >= index) {
+                    for (const jugadorHistorico of historicoAux.jugadores) {
+                        if (jugadorHistorico.nombre === duelo.ganadorNombre) {
+                            jugadorHistorico.puntuacion = parseInt(jugadorHistorico.puntuacion) + parseInt(duelo.apuesta);
+                        } else if (jugadorHistorico.nombre === duelo.perdedorNombre) {
+                            jugadorHistorico.puntuacion = parseInt(jugadorHistorico.puntuacion) - parseInt(duelo.apuesta);
+                        }
+                    }
+                    await Historico.findByIdAndUpdate(historicoAux._id, historicoAux);
+                }
+                cont++;
+            }
         }
 
+
     } else {
-        if (!juegoIndividual) {
-            //es juego de equipo
+        if (!juegoIndividual) {//es juego de equipo
+            
             if (!juegoEquipo) {
                 return res.status(404).send(`No existe un juego ni de equipo ni individual con el id: ${idJuego}`);
             }
