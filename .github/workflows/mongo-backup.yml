@@ -27,11 +27,26 @@ jobs:
           mongodump --uri="$MONGO_URI" --out=dump
           zip -r mongo-backup.zip dump
           
+      - name: Exportar todas las colecciones como JSON
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+        run: |
+          for collection in $(mongo --quiet --eval "db.getCollectionNames().join(' ')" $MONGO_DB); do
+            mongoexport --uri="$MONGO_URI" --collection=$collection --out="${collection}.json"
+          done
+          zip export-backups.zip *.json
+
       - name: Guarda backup como artefacto
         uses: actions/upload-artifact@v4
         with:
           name: mongo-backup
           path: mongo-backup.zip
+
+      - name: Guarda export como artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: mongo-export
+          path: export-backups.zip
           
       - name: Instala herramientas para enviar correo
         run: |
@@ -50,9 +65,6 @@ jobs:
             echo "ERROR: EMAIL_FROM no está configurado."
             exit 1
           fi
-
-
-      
 
       - name: Instala y configura mutt
         run: |
@@ -74,4 +86,4 @@ jobs:
 
       - name: Envía correo con adjunto
         run: |
-          echo "Adjunto el backup semanal de MongoDB" | mutt -s "MongoDB Backup" -a mongo-backup.zip -- ${{ secrets.EMAIL_TO }}
+          echo "Adjunto el backup semanal de MongoDB (binario y exportado en JSON)" | mutt -s "MongoDB Backup" -a mongo-backup.zip export-backups.zip -- ${{ secrets.EMAIL_TO }}
