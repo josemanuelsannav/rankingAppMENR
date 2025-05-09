@@ -57,9 +57,10 @@ jobs:
       - name: Enviar backup por correo
         env:
           EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
-          EMAIL_TO: ${{ secrets.EMAIL_TO }}
           EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
         run: |
+          sudo apt-get install -y mailutils msmtp-mta
+
           echo "defaults" > ~/.msmtprc
           echo "auth on" >> ~/.msmtprc
           echo "tls on" >> ~/.msmtprc
@@ -74,5 +75,4 @@ jobs:
           echo "account default : gmail" >> ~/.msmtprc
           chmod 600 ~/.msmtprc
 
-          echo -e "Subject: MongoDB Backup\n\nAdjunto el backup semanal de MongoDB" | msmtp --from=$EMAIL_FROM -a gmail $EMAIL_TO
-          msmtp --debug --from=$EMAIL_FROM --tls=on -a gmail -t < mongo-backup.zip
+          echo "Adjunto el backup semanal de MongoDB" | mail -s "MongoDB Backup" -a mongo-backup.zip ${{ secrets.EMAIL_TO }}
