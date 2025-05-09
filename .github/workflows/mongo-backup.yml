@@ -54,12 +54,9 @@ jobs:
 
       
 
-      - name: Enviar backup por correo
-        env:
-          EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
-          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+      - name: Instala y configura mutt
         run: |
-          sudo apt-get install -y mailutils msmtp-mta
+          sudo apt-get install -y mutt msmtp
 
           echo "defaults" > ~/.msmtprc
           echo "auth on" >> ~/.msmtprc
@@ -69,10 +66,12 @@ jobs:
           echo "account gmail" >> ~/.msmtprc
           echo "host smtp.gmail.com" >> ~/.msmtprc
           echo "port 587" >> ~/.msmtprc
-          echo "from $EMAIL_FROM" >> ~/.msmtprc
-          echo "user $EMAIL_FROM" >> ~/.msmtprc
-          echo "password $EMAIL_PASSWORD" >> ~/.msmtprc
+          echo "from ${{ secrets.EMAIL_FROM }}" >> ~/.msmtprc
+          echo "user ${{ secrets.EMAIL_FROM }}" >> ~/.msmtprc
+          echo "password ${{ secrets.EMAIL_PASSWORD }}" >> ~/.msmtprc
           echo "account default : gmail" >> ~/.msmtprc
           chmod 600 ~/.msmtprc
 
-          echo "Adjunto el backup semanal de MongoDB" | mail -s "MongoDB Backup" -a mongo-backup.zip ${{ secrets.EMAIL_TO }}
+      - name: Envía correo con adjunto
+        run: |
+          echo "Adjunto el backup semanal de MongoDB" | mutt -s "MongoDB Backup" -a mongo-backup.zip -- ${{ secrets.EMAIL_TO }}
