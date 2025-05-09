@@ -31,6 +31,8 @@ jobs:
         env:
           MONGO_URI: ${{ secrets.MONGO_URI }}
         run: |
+          # Instalar mongo-tools para utilizar mongoexport
+          sudo apt-get install -y mongodb-org-shell
           for collection in $(mongo --quiet --eval "db.getCollectionNames().join(' ')" $MONGO_DB); do
             mongoexport --uri="$MONGO_URI" --collection=$collection --out="${collection}.json"
           done
