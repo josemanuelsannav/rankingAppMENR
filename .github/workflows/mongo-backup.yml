@@ -1,0 +1,50 @@
+name: MongoDB Weekly Backup
+
+on:
+  schedule:
+    - cron: '9 17 * * 5'  # Cada domingo a las 3:00 UTC
+  workflow_dispatch:  # Permite lanzarlo manualmente desde GitHub si quieres
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Instala MongoDB Tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mongodb-clients
+
+      - name: Realiza backup con mongodump
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+        run: |
+          mkdir -p dump
+          mongodump --uri="$MONGO_URI" --out=dump
+
+      - name: Comprime el backup
+        run: zip -r mongo-backup.zip dump
+
+      - name: Sube backup como artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: mongo-backup
+          path: mongo-backup.zip
+          
+      - name: Enviar backup por correo
+        run: |
+          sudo apt-get install -y mailutils msmtp-mta
+          echo "defaults" > ~/.msmtprc
+          echo "auth on" >> ~/.msmtprc
+          echo "tls on" >> ~/.msmtprc
+          echo "tls_trust_file /etc/ssl/certs/ca-certificates.crt" >> ~/.msmtprc
+          echo "logfile ~/.msmtp.log" >> ~/.msmtprc
+          echo "account gmail" >> ~/.msmtprc
+          echo "host smtp.gmail.com" >> ~/.msmtprc
+          echo "port 587" >> ~/.msmtprc
+          echo "from ${{ secrets.EMAIL_FROM }}" >> ~/.msmtprc
+          echo "user ${{ secrets.EMAIL_FROM }}" >> ~/.msmtprc
+          echo "password ${{ secrets.EMAIL_PASSWORD }}" >> ~/.msmtprc
+          echo "account default : gmail" >> ~/.msmtprc
+          chmod 600 ~/.msmtprc
+
+          echo "Adjunto el backup semanal de MongoDB" | mail -s "MongoDB Backup" -a mongo-backup.zip ${{ secrets.EMAIL_TO }}
