@@ -1,4 +1,4 @@
-  name: MongoDB Weekly Backup
+name: MongoDB Weekly Backup
 
 on:
   schedule:
