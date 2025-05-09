@@ -2,37 +2,37 @@ name: MongoDB Weekly Backup
 
 on:
   schedule:
-    - cron: '9 15 * * 5'  # Cada domingo a las 3:00 UTC , restar dos horas a la española
-  workflow_dispatch:  # Permite lanzarlo manualmente desde GitHub si quieres
+    - cron: '23 15 * * 5'  # Viernes a las 17:23 hora de España (UTC+2)
+  workflow_dispatch:  # Permite ejecutarlo manualmente
 
 jobs:
   backup:
     runs-on: ubuntu-latest
+
     steps:
       - name: Instala MongoDB Tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y mongodb-clients
+          sudo apt-get install -y gnupg wget
+          wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | sudo apt-key add -
+          echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
+          sudo apt-get update
+          sudo apt-get install -y mongodb-org-tools
 
       - name: Realiza backup con mongodump
         env:
           MONGO_URI: ${{ secrets.MONGO_URI }}
         run: |
-          mkdir -p dump
+          mkdir dump
           mongodump --uri="$MONGO_URI" --out=dump
+          zip -r mongo-backup.zip dump
 
-      - name: Comprime el backup
-        run: zip -r mongo-backup.zip dump
-
-      - name: Sube backup como artefacto
-        uses: actions/upload-artifact@v4
-        with:
-          name: mongo-backup
-          path: mongo-backup.zip
-          
-      - name: Enviar backup por correo
+      - name: Instala herramientas para enviar correo
         run: |
           sudo apt-get install -y mailutils msmtp-mta
+
+      - name: Enviar backup por correo
+        run: |
           echo "defaults" > ~/.msmtprc
           echo "auth on" >> ~/.msmtprc
           echo "tls on" >> ~/.msmtprc
