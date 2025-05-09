@@ -18,8 +18,6 @@ jobs:
           echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
           sudo apt-get update
           sudo apt-get install -y mongodb-org-tools
-          sudo apt-get install -y mongodb-org-shell
-          export PATH=$PATH:/usr/bin
 
       - name: Realiza backup con mongodump
         env:
@@ -29,27 +27,11 @@ jobs:
           mongodump --uri="$MONGO_URI" --out=dump
           zip -r mongo-backup.zip dump
           
-      - name: Exportar todas las colecciones como JSON
-        env:
-          MONGO_URI: ${{ secrets.MONGO_URI }}
-        run: |
-          # Exportar todas las colecciones
-          for collection in $(mongo --quiet --eval "db.getCollectionNames().join(' ')" $MONGO_DB); do
-            mongoexport --uri="$MONGO_URI" --collection=$collection --out="${collection}.json"
-          done
-          zip export-backups.zip *.json
-
       - name: Guarda backup como artefacto
         uses: actions/upload-artifact@v4
         with:
           name: mongo-backup
           path: mongo-backup.zip
-
-      - name: Guarda export como artefacto
-        uses: actions/upload-artifact@v4
-        with:
-          name: mongo-export
-          path: export-backups.zip
           
       - name: Instala herramientas para enviar correo
         run: |
@@ -69,9 +51,15 @@ jobs:
             exit 1
           fi
 
-      - name: Instala y configura mutt
+
+      
+
+      - name: Enviar backup por correo
+        env:
+          EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
         run: |
-          sudo apt-get install -y mutt msmtp
+          sudo apt-get install -y mailutils msmtp-mta
 
           echo "defaults" > ~/.msmtprc
           echo "auth on" >> ~/.msmtprc
@@ -81,12 +69,10 @@ jobs:
           echo "account gmail" >> ~/.msmtprc
           echo "host smtp.gmail.com" >> ~/.msmtprc
           echo "port 587" >> ~/.msmtprc
-          echo "from ${{ secrets.EMAIL_FROM }}" >> ~/.msmtprc
-          echo "user ${{ secrets.EMAIL_FROM }}" >> ~/.msmtprc
-          echo "password ${{ secrets.EMAIL_PASSWORD }}" >> ~/.msmtprc
+          echo "from $EMAIL_FROM" >> ~/.msmtprc
+          echo "user $EMAIL_FROM" >> ~/.msmtprc
+          echo "password $EMAIL_PASSWORD" >> ~/.msmtprc
           echo "account default : gmail" >> ~/.msmtprc
           chmod 600 ~/.msmtprc
 
-      - name: Envía correo con adjunto
-        run: |
-          echo "Adjunto el backup semanal de MongoDB (binario y exportado en JSON)" | mutt -s "MongoDB Backup" -a mongo-backup.zip export-backups.zip -- ${{ secrets.EMAIL_TO }}
+          echo "Adjunto el backup semanal de MongoDB" | mail -s "MongoDB Backup" -a mongo-backup.zip ${{ secrets.EMAIL_TO }}
