@@ -26,7 +26,13 @@ jobs:
           mkdir dump
           mongodump --uri="$MONGO_URI" --out=dump
           zip -r mongo-backup.zip dump
-
+          
+      - name: Guarda backup como artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: mongo-backup
+          path: mongo-backup.zip
+          
       - name: Instala herramientas para enviar correo
         run: |
           sudo apt-get install -y mailutils msmtp-mta
