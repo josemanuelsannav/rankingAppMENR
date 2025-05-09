@@ -18,6 +18,8 @@ jobs:
           echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
           sudo apt-get update
           sudo apt-get install -y mongodb-org-tools
+          sudo apt-get install -y mongodb-org-shell
+          export PATH=$PATH:/usr/bin
 
       - name: Realiza backup con mongodump
         env:
@@ -31,8 +33,7 @@ jobs:
         env:
           MONGO_URI: ${{ secrets.MONGO_URI }}
         run: |
-          # Instalar mongo-tools para utilizar mongoexport
-          sudo apt-get install -y mongodb-org-shell
+          # Exportar todas las colecciones
           for collection in $(mongo --quiet --eval "db.getCollectionNames().join(' ')" $MONGO_DB); do
             mongoexport --uri="$MONGO_URI" --collection=$collection --out="${collection}.json"
           done
