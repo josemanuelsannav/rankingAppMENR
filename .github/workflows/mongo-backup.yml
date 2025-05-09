@@ -53,4 +53,4 @@ jobs:
           echo "account default : gmail" >> ~/.msmtprc
           chmod 600 ~/.msmtprc
 
-          echo "Adjunto el backup semanal de MongoDB" | msmtp --debug --from=$EMAIL_FROM --tls=on -a gmail -t $EMAIL_TO -s "MongoDB Backup" -a mongo-backup.zip
+          echo -e "Subject: MongoDB Backup\n\nAdjunto el backup semanal de MongoDB" | msmtp --debug --from=$EMAIL_FROM --tls=on -a gmail -t $EMAIL_TO -a mongo-backup.zip
