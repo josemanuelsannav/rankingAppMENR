@@ -1,4 +1,4 @@
-name: MongoDB Weekly Backup
+  name: MongoDB Weekly Backup
 
 on:
   schedule:
@@ -36,6 +36,19 @@ jobs:
       - name: Instala herramientas para enviar correo
         run: |
           sudo apt-get install -y mailutils msmtp-mta
+
+      - name: Verificar variables de entorno
+        run: |
+          if [ -z "$EMAIL_TO" ]; then
+          echo "ERROR: EMAIL_TO no está configurado."
+          exit 1
+          fi
+          if [ -z "$EMAIL_FROM" ]; then
+          echo "ERROR: EMAIL_FROM no está configurado."
+          exit 1
+          fi
+
+      
 
       - name: Enviar backup por correo
         run: |
