@@ -2,7 +2,7 @@ name: MongoDB Weekly Backup
 
 on:
   schedule:
-    - cron: '9 17 * * 5'  # Cada domingo a las 3:00 UTC
+    - cron: '9 15 * * 5'  # Cada domingo a las 3:00 UTC , restar dos horas a la española
   workflow_dispatch:  # Permite lanzarlo manualmente desde GitHub si quieres
 
 jobs:
