@@ -1,0 +1,77 @@
+name: MongoDB Weekly Backup
+
+on:
+  schedule:
+    - cron: '23 15 * * 5'  # Viernes a las 17:23 hora de España (UTC+2)
+  workflow_dispatch:  # Permite ejecutarlo manualmente
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Instala MongoDB Tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gnupg wget
+          wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | sudo apt-key add -
+          echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
+          sudo apt-get update
+          sudo apt-get install -y mongodb-org-tools
+
+      - name: Realiza backup con mongodump
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+        run: |
+          mkdir dump
+          mongodump --uri="$MONGO_URI" --out=dump
+          zip -r mongo-backup.zip dump
+          
+      - name: Guarda backup como artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: mongo-backup
+          path: mongo-backup.zip
+          
+      - name: Instala herramientas para enviar correo
+        run: |
+          sudo apt-get install -y mailutils msmtp-mta
+
+      - name: Verificar variables de entorno
+        env:
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+          EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+        run: |
+          if [ -z "$EMAIL_TO" ]; then
+            echo "ERROR: EMAIL_TO no está configurado."
+            exit 1
+          fi
+          if [ -z "$EMAIL_FROM" ]; then
+            echo "ERROR: EMAIL_FROM no está configurado."
+            exit 1
+          fi
+
+
+      
+
+      - name: Instala y configura mutt
+        run: |
+          sudo apt-get install -y mutt msmtp
+
+          echo "defaults" > ~/.msmtprc
+          echo "auth on" >> ~/.msmtprc
+          echo "tls on" >> ~/.msmtprc
+          echo "tls_trust_file /etc/ssl/certs/ca-certificates.crt" >> ~/.msmtprc
+          echo "logfile ~/.msmtp.log" >> ~/.msmtprc
+          echo "account gmail" >> ~/.msmtprc
+          echo "host smtp.gmail.com" >> ~/.msmtprc
+          echo "port 587" >> ~/.msmtprc
+          echo "from ${{ secrets.EMAIL_FROM }}" >> ~/.msmtprc
+          echo "user ${{ secrets.EMAIL_FROM }}" >> ~/.msmtprc
+          echo "password ${{ secrets.EMAIL_PASSWORD }}" >> ~/.msmtprc
+          echo "account default : gmail" >> ~/.msmtprc
+          chmod 600 ~/.msmtprc
+
+      - name: Envía correo con adjunto
+        run: |
+          echo "Adjunto el backup semanal de MongoDB" | mutt -s "MongoDB Backup" -a mongo-backup.zip -- ${{ secrets.EMAIL_TO }}
