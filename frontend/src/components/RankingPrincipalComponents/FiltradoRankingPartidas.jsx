@@ -16,7 +16,8 @@ const FiltradoRankingPartidas = ({ historico }) => {
 
     const handleFiltrar = () => {
 
-        const juegoDesde = historicoOrdenado.find((juego) => juego._id === juegoSeleccionadoDesde);
+        const indexDesde = historicoOrdenado.findIndex(juego => juego._id === juegoSeleccionadoDesde);
+        const juegoDesde = indexDesde > 0 ? historicoOrdenado[indexDesde - 1] : null;
         const juegoHasta = historicoOrdenado.find((juego) => juego._id === juegoSeleccionadoHasta);
 
         const jugadoresResultado = juegoHasta.jugadores.map((jugador) => ({

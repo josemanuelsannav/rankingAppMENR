@@ -40,8 +40,8 @@
 
 .chart-container-jugador {
     width: 100%;
-    height: 100%; /* Aumenta la altura del contenedor de la gráfica */
-    flex-grow: 1;
+   /* height: 300px; /* Aumenta la altura del contenedor de la gráfica */
+   /* flex-grow: 1;
     max-width: 90vw; /* Asegúrate de que la gráfica no se distorsione */
-    max-height: 80vh; /* Asegúrate de que la gráfica no se distorsione */
+    /*max-height: 80vh; /* Asegúrate de que la gráfica no se distorsione */
 }
